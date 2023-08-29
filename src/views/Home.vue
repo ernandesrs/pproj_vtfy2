@@ -11,8 +11,15 @@
 
 			<v-row class="d-flex align-center justify-center">
 				<v-col cols="auto">
-					<v-btn color="primary" variant="elevated" prepend-icon="mdi-login" size="large">
+					<v-btn :to="{ name: 'auth.login' }" color="primary" variant="elevated" prepend-icon="mdi-login"
+						size="large">
 						Login
+					</v-btn>
+				</v-col>
+				<v-col cols="auto">
+					<v-btn :to="{ name: 'auth.register' }" color="primary" variant="elevated" prepend-icon="mdi-account"
+						size="large">
+						Register
 					</v-btn>
 				</v-col>
 			</v-row>
