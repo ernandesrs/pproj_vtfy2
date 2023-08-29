@@ -1,10 +1,10 @@
 <template>
     <v-row justify="center">
-        <v-col cols="12" class="text-center">
+        <v-col cols="12">
             <h1>Cadastrar conta</h1>
         </v-col>
 
-        <v-col cols="12" sm="10" md="7" lg="5">
+        <v-col>
             <v-form>
                 <v-row>
                     <v-col cols="12" sm="6">
