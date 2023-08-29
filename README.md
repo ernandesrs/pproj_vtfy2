@@ -1,4 +1,5 @@
-# essentials
+# VTFY2
+Dashboard em Vutify 3, utilizando a api em Laravel 9 [LAPI](https://github.com/ernandesrs/pproj_lapi).
 
 ## Project setup
 
