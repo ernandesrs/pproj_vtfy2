@@ -32,6 +32,8 @@
 import { useAppStore } from '@/store/app';
 import { computed } from 'vue';
 
+useAppStore().updateTitleBar('Bem vindo');
+
 /**
  * Computeds
  */
