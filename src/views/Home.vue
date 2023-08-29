@@ -3,9 +3,9 @@
 		<v-responsive class="align-center text-center fill-height">
 			<v-img height="300" src="@/assets/logo.svg" />
 
-			<div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
+			<div class="text-body-2 font-weight-light mb-n1">Bem vindo(a) ao</div>
 
-			<h1 class="text-h2 font-weight-bold">Vuetify</h1>
+			<h1 class="text-h2 font-weight-bold">{{ computed_appStore.getName }}</h1>
 
 			<div class="py-14" />
 
@@ -20,4 +20,16 @@
 	</v-container>
 </template>
 
-<script setup></script>
+<script setup>
+
+import { useAppStore } from '@/store/app';
+import { computed } from 'vue';
+
+/**
+ * Computeds
+ */
+const computed_appStore = computed(() => {
+	return useAppStore();
+});
+
+</script>
