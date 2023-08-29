@@ -8,15 +8,18 @@
             <v-form>
                 <v-row>
                     <v-col cols="12" sm="6">
-                        <v-text-field label="Nome" v-model="form.data.first_name" />
+                        <v-text-field label="Nome" v-model="form.data.first_name"
+                            :rules="[validator.required, validator.first_name]" />
                     </v-col>
 
                     <v-col cols="12" sm="6">
-                        <v-text-field label="Sobrenome" v-model="form.data.last_name" />
+                        <v-text-field label="Sobrenome" v-model="form.data.last_name"
+                            :rules="[validator.required, validator.last_name]" />
                     </v-col>
 
                     <v-col cols="12" sm="6">
-                        <v-text-field label="Usuário" v-model="form.data.username" />
+                        <v-text-field label="Usuário" v-model="form.data.username"
+                            :rules="[validator.required, validator.first_name]" />
                     </v-col>
 
                     <v-col cols="12" sm="6">
@@ -33,22 +36,25 @@
                                 text: 'Não definir',
                                 value: 'n'
                             }
-                        ]" item-title="text" item-value="value" v-model="form.data.gender" />
+                        ]" item-title="text" item-value="value" v-model="form.data.gender"
+                            :rules="[validator.required, validator.gender]" />
                     </v-col>
 
                     <v-col cols="12">
-                        <v-text-field label="E-mail" v-model="form.data.email" />
+                        <v-text-field label="E-mail" v-model="form.data.email"
+                            :rules="[validator.required, validator.email]" />
                     </v-col>
 
                     <v-col cols="12" sm="6">
                         <v-text-field :type="showPassword ? 'text' : 'password'" v-model="form.data.password"
                             :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                            @click:append-inner="showPassword = !showPassword" />
+                            @click:append-inner="showPassword = !showPassword"
+                            :rules="[validator.required, validator.password]" />
                     </v-col>
 
                     <v-col cols="12" sm="6">
-                        <v-text-field :type="showPassword ? 'text' : 'password'"
-                            v-model="form.data.password_confirmation" />
+                        <v-text-field :type="showPassword ? 'text' : 'password'" v-model="form.data.password_confirmation"
+                            :rules="[validator.required, validator.password]" />
                     </v-col>
 
                     <v-col cols="12" class="d-flex align-center justify-space-between">
@@ -65,6 +71,7 @@
 <script setup>
 
 import { useAppStore } from '@/store/app';
+import validator from '@/utils/validator';
 import { ref } from 'vue';
 
 const showPassword = ref(false);

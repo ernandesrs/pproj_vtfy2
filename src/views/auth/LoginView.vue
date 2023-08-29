@@ -5,10 +5,10 @@
         </v-col>
 
         <v-col cols="12">
-            <v-form>
+            <v-form v-model="form.valid">
                 <v-row>
                     <v-col cols="12">
-                        <v-text-field label="E-mail" v-model="form.data.email" />
+                        <v-text-field label="E-mail" v-model="form.data.email" :rules="[validator.required, validator.email]" />
                     </v-col>
 
                     <v-col cols="12">
@@ -32,13 +32,16 @@
 
 import { useAppStore } from '@/store/app';
 import { ref } from 'vue';
+import validator from '@/utils/validator';
 
 const showPassword = ref(false);
 const form = ref({
+    valid: false,
     data: {
         email: null,
         password: null
-    }
+    },
+    errors: {}
 });
 
 /**
