@@ -7,8 +7,14 @@ export const useAppStore = defineStore('app', {
 	}),
 
 	getters: {
-		getName: (state) => {
-			return state.name;
+		getName() {
+			return this.name;
+		}
+	},
+
+	actions: {
+		updateTitleBar(page) {
+			document.title = '[' + this.name + '] ' + page;
 		}
 	}
 })
