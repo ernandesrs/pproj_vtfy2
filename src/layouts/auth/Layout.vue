@@ -4,10 +4,10 @@
     <v-app>
         <v-main class="d-flex align-center justify-center pa-6">
             <v-row justify="center">
-                <v-col cols="12" lg="10">
+                <v-col cols="12" sm="10" lg="10">
                     <v-row>
                         <v-col cols="12" md="6" class="bg-primary text-center">
-                            <v-icon icon="$vuetify" size="200" />
+                            <v-icon icon="$vuetify" size="150" />
                             <h1>
                                 {{ computed_appStore.getName }}
                             </h1>
