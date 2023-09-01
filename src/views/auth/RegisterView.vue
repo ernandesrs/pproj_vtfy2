@@ -157,6 +157,10 @@ const method_register = () => {
 /**
  * Created
  */
-appStore.updateTitleBar('Cadastro');
+appStore.setBreadcrumbs([
+    {
+        text: 'Criar conta'
+    }
+]);
 
 </script>

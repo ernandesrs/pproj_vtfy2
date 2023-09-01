@@ -36,7 +36,7 @@ import { useAppStore } from '@/store/app';
 /**
  * Created
  */
-useAppStore().updateTitleBar('Administração');
+useAppStore().setBreadcrumbs();
 
 </script>
 

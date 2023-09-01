@@ -2,18 +2,50 @@
 import { defineStore } from 'pinia';
 import { add as alert_add, get as alert_get } from '@/utils/alert';
 
+const setTitlebar = (appInstance) => {
+	document.title = '[' + appInstance.name + (appInstance.subname ? ' ' + appInstance.subname : '') + '] ' + appInstance.breadcrumbs.map((bread) => {
+		return bread.text;
+	}).join(' » ');
+}
+
 export const useAppStore = defineStore('app', {
 	state: () => ({
 		name: import.meta.env.VITE_APP_NAME,
 		subname: null,
 		app: null,
+		breadcrumbs: [],
 
 		alert: {}
 	}),
 
 	getters: {
+		/**
+		 * 
+		 * App
+		 * 
+		 */
 		getName() {
 			return this.name;
+		},
+
+		getSubname() {
+			return this.subname;
+		},
+
+		getApp() {
+			return this.app;
+		},
+
+		inAdmin() {
+			return this.app == 'admin';
+		},
+
+		inAuth() {
+			return this.app == 'auth';
+		},
+
+		getBreadcrumbs() {
+			return this.breadcrumbs;
 		},
 
 		/**
@@ -39,8 +71,23 @@ export const useAppStore = defineStore('app', {
 	},
 
 	actions: {
-		updateTitleBar(page) {
-			document.title = '[' + this.name + '] ' + page;
+		setBreadcrumbs(breadcrumbs = []) {
+			if (this.inAdmin) {
+				this.breadcrumbs = [
+					{
+						text: 'Início',
+						to: {
+							name: this.inAdmin ? 'admin.home' : ''
+						},
+						disabled: false
+					},
+					...breadcrumbs
+				];
+			} else {
+				this.breadcrumbs = breadcrumbs;
+			}
+
+			setTitlebar(this);
 		},
 
 		setApp(app, subname = null) {

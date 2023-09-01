@@ -98,6 +98,10 @@ const method_login = () => {
 /**
  * Created
  */
-appStore.updateTitleBar('Login');
+appStore.setBreadcrumbs([
+    {
+        text: 'Acessar conta'
+    }
+]);
 
 </script>

@@ -61,6 +61,10 @@ const computed_authStore = computed(() => {
  * Created
  * 
  */
-useAppStore().updateTitleBar('Bem vindo');
+useAppStore().setBreadcrumbs([
+	{
+		text: 'Bem vindo'
+	}
+]);
 
 </script>
