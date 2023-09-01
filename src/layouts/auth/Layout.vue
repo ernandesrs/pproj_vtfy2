@@ -1,4 +1,6 @@
 <template>
+    <alert-elem />
+
     <v-app>
         <v-main class="d-flex align-center justify-center pa-6">
             <v-row justify="center">
@@ -26,6 +28,7 @@
   
 <script setup>
 
+import AlertElem from '@/components/AlertElem.vue';
 import { useAppStore } from '@/store/app';
 import { computed } from 'vue';
 

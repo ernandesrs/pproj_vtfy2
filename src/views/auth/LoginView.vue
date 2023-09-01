@@ -5,7 +5,7 @@
         </v-col>
 
         <v-col cols="12">
-            <v-form v-model="form.valid" fast-fail @submit.prevent="method_login">
+            <v-form v-model="form.valid" @submit.prevent="method_login">
                 <v-row>
                     <v-col cols="12">
                         <v-text-field label="E-mail" v-model="form.data.email" :error-messages="form.errors?.email"
@@ -14,7 +14,7 @@
 
                     <v-col cols="12">
                         <v-text-field :type="showPassword ? 'text' : 'password'" v-model="form.data.password"
-                            :error-messages="form.errors?.password"
+                            :error-messages="form.errors?.password" :rules="[validator.required, validator.password]"
                             :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
                             @click:append-inner="showPassword = !showPassword" label="Senha" />
                     </v-col>
@@ -22,8 +22,8 @@
                     <v-col cols="12" class="d-flex align-center justify-space-between">
                         <v-btn :to="{ name: 'auth.register' }" prepend-icon="mdi-account" text="Criar conta" color="primary"
                             size="large" variant="plain" />
-                        <v-btn type="submit" append-icon="mdi-arrow-right" text="Acessar" color="primary"
-                            size="large" :loading="form.submitting" />
+                        <v-btn type="submit" append-icon="mdi-arrow-right" text="Acessar" color="primary" size="large"
+                            :loading="form.submitting" />
                     </v-col>
                 </v-row>
             </v-form>
@@ -38,7 +38,21 @@ import { ref } from 'vue';
 import validator from '@/utils/validator';
 import { req } from '@/plugins/axios';
 
+/**
+ * 
+ * Props
+ * 
+ */
+
+/**
+ * 
+ * Vars, Refs ands Reactives
+ * 
+ */
+const appStore = useAppStore();
+
 const showPassword = ref(false);
+
 const form = ref({
     valid: false,
     submitting: false,
@@ -50,15 +64,16 @@ const form = ref({
 });
 
 /**
- * Created
- */
-useAppStore().updateTitleBar('Login');
+ * 
+ * Computeds
+ * 
 
 /**
  * Methods
  */
 const method_login = () => {
     if (!form.value.valid) {
+        appStore.addAlert().missingData();
         return;
     }
 
@@ -83,5 +98,16 @@ const method_login = () => {
         }
     });
 }
+
+/**
+ * 
+ * Watchers
+ * 
+ */
+
+/**
+ * Created
+ */
+appStore.updateTitleBar('Login');
 
 </script>

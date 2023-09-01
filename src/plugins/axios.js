@@ -1,5 +1,8 @@
 import axios from "axios";
 import token from "@/utils/token";
+import { useAppStore } from "@/store/app";
+
+const appStore = useAppStore();
 
 axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
 
@@ -28,6 +31,8 @@ const req = async (config = {
             config.success(response);
         }
     }).catch((response) => {
+        appStore.addAlert().error(response.response.data.error, response.response.data.error);
+
         if (config?.fail) {
             config.fail(response);
         }

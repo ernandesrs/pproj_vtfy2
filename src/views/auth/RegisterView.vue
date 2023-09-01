@@ -5,7 +5,7 @@
         </v-col>
 
         <v-col>
-            <v-form>
+            <v-form v-model="form.valid" @submit.prevent="method_register">
                 <v-row>
                     <v-col cols="12" sm="6">
                         <v-text-field label="Nome" v-model="form.data.first_name"
@@ -60,7 +60,7 @@
                     <v-col cols="12" class="d-flex align-center justify-space-between">
                         <v-btn :to="{ name: 'auth.login' }" append-icon="mdi-login" text="Eu tenho conta" color="primary"
                             size="large" variant="plain" />
-                        <v-btn append-icon="mdi-check" text="Cadastrar" color="primary" size="large" />
+                        <v-btn type="submit" append-icon="mdi-check" text="Cadastrar" color="primary" size="large" />
                     </v-col>
                 </v-row>
             </v-form>
@@ -70,12 +70,32 @@
 
 <script setup>
 
+import { req } from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
 import validator from '@/utils/validator';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+/**
+ * 
+ * Props
+ * 
+ */
+
+/**
+ * 
+ * Vars, Refs ands Reactives
+ * 
+ */
+const appStore = useAppStore();
+
+const router = useRouter();
 
 const showPassword = ref(false);
+
 const form = ref({
+    valid: false,
+    submitting: false,
     data: {
         first_name: null,
         last_name: null,
@@ -84,12 +104,59 @@ const form = ref({
         email: null,
         password: null,
         password_confirmation: null
-    }
+    },
+    errors: {}
 });
+
+/**
+ * 
+ * Computeds
+ * 
+
+/**
+ * Methods
+ */
+const method_register = () => {
+    if (!form.value.valid) {
+        appStore.addAlert().missingData();
+        return;
+    }
+
+    form.value.submitting = true;
+    req({
+        action: '/auth/register',
+        method: 'post',
+        data: {
+            first_name: form.value.data.first_name,
+            last_name: form.value.data.last_name,
+            username: form.value.data.username,
+            gender: form.value.data.gender,
+            email: form.value.data.email,
+            password: form.value.data.password,
+            password_confirmation: form.value.data.password_confirmation
+        },
+        success: () => {
+            appStore.addAlert().success('Pronto! Sua conta foi registrada, agora faça login.', 'Registrado(a)!', true);
+            router.push({ name: 'auth.login' });
+        },
+        fail: (resp) => {
+            form.value.errors = resp.response.data.errors;
+        },
+        finally: () => {
+            form.value.submitting = false;
+        }
+    });
+}
+
+/**
+ * 
+ * Watchers
+ * 
+ */
 
 /**
  * Created
  */
-useAppStore().updateTitleBar('Cadastro');
+appStore.updateTitleBar('Cadastro');
 
 </script>
