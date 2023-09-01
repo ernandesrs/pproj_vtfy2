@@ -82,7 +82,8 @@ const method_login = () => {
     form.value.submitting = true;
 
     authStore.login(form.value.data.email, form.value.data.password).catch((r) => {
-        form.value.errors = r.response.data.errors;
+        console.log(r);
+        form.value.errors = r.response?.data?.errors;
     }).then(() => {
         form.value.submitting = false;
     })

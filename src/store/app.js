@@ -1,10 +1,12 @@
 // Utilities
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 import { add as alert_add, get as alert_get } from '@/utils/alert';
 
 export const useAppStore = defineStore('app', {
 	state: () => ({
 		name: import.meta.env.VITE_APP_NAME,
+		subname: null,
+		app: null,
 
 		alert: {}
 	}),
@@ -39,6 +41,11 @@ export const useAppStore = defineStore('app', {
 	actions: {
 		updateTitleBar(page) {
 			document.title = '[' + this.name + '] ' + page;
+		},
+
+		setApp(app, subname = null) {
+			this.app = app;
+			this.subname = subname;
 		},
 
 		/**

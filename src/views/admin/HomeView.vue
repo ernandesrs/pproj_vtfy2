@@ -1,9 +1,10 @@
 <template>
-  <router-view />
+    <h1>Admin: Home View</h1>
 </template>
 
 <script setup>
 
+import { useAppStore } from '@/store/app';
 
 /**
  * 
@@ -35,5 +36,8 @@
 /**
  * Created
  */
+useAppStore().updateTitleBar('Administração');
 
 </script>
+
+<style lang="scss" scoped></style>
