@@ -80,6 +80,12 @@ const method_close = () => {
     data.value.alert.uid = null;
 };
 
+const method_getFlash = () => {
+    if (appStore.hasFlashAlert()) {
+        data.value.alert = appStore.getFlashAlert();
+    }
+}
+
 /**
  * 
  * Watchers
@@ -111,14 +117,13 @@ watch(() => data.value.alert, (nv, ov) => {
 
 watch(() => vueRoute.name, (nv, ov) => {
     if (nv != ov) {
-        if (appStore.hasFlashAlert()) {
-            data.value.alert = appStore.getFlashAlert();
-        }
+        method_getFlash();
     }
 });
 
 /**
  * Created
  */
+method_getFlash();
 
 </script>
