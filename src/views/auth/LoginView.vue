@@ -34,9 +34,9 @@
 <script setup>
 
 import { useAppStore } from '@/store/app';
+import { useAuthStore } from '@/store/user/auth';
 import { ref } from 'vue';
 import validator from '@/utils/validator';
-import { req } from '@/plugins/axios';
 
 /**
  * 
@@ -50,6 +50,8 @@ import { req } from '@/plugins/axios';
  * 
  */
 const appStore = useAppStore();
+
+const authStore = useAuthStore();
 
 const showPassword = ref(false);
 
@@ -78,25 +80,12 @@ const method_login = () => {
     }
 
     form.value.submitting = true;
-    req({
-        action: '/auth/login',
-        method: 'post',
-        data: {
-            email: form.value.data.email,
-            password: form.value.data.password
-        },
-        success: (resp) => {
-            let access = resp.data.access;
-            let user = resp.data.user;
-            console.log('Sucesso', access, user);
-        },
-        fail: (resp) => {
-            form.value.errors = resp.response.data.errors;
-        },
-        finally: () => {
-            form.value.submitting = false;
-        }
-    });
+
+    authStore.login(form.value.data.email, form.value.data.password).catch((r) => {
+        form.value.errors = r.response.data.errors;
+    }).then(() => {
+        form.value.submitting = false;
+    })
 }
 
 /**

@@ -14,6 +14,12 @@ axios.interceptors.request.use(function (config) {
     return config;
 });
 
+/**
+ * Call .then() and .catch() and .then()
+ * 
+ * @param {Object} config 
+ * @returns {Promise}
+ */
 const req = async (config = {
     action: null,
     method: 'get',
@@ -43,4 +49,22 @@ const req = async (config = {
     })
 }
 
-export { req };
+/**
+ * Return a axios.request instance
+ * 
+ * @param {Object} config 
+ * @returns {Promise}
+ */
+const request = async (config = {
+    action: null,
+    method: 'get',
+    data: null
+}) => {
+    return axios.request({
+        url: config?.action,
+        method: config?.method,
+        data: config?.data
+    });
+};
+
+export { req, request };
