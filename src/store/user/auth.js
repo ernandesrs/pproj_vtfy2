@@ -26,6 +26,7 @@ export const useAuthStore = defineStore('auth', {
                 let access = resp.data.access;
 
                 token.set(access.full, access.expire_in_minutes);
+
                 this.user = user;
                 this.roles = user.roles;
             });
