@@ -112,23 +112,15 @@
 
                     <content-elem title="Detalhes da conta">
                         <template #content>
-                            <div class="mb-2">
-                                <p class="text-subtitle-2 font-weight-regular">Criado em:</p>
-                                <p class="font-weight-medium">{{ (new
-                                    Date(authStore.getUser.created_at)).toLocaleString('br') }}</p>
-                            </div>
-                            <div class="mb-2">
-                                <p class="text-subtitle-2 font-weight-regular">Verificado em:</p>
-                                <p class="font-weight-medium">
-                                    <span v-if="authStore.getUser.email_verified_at">{{ (new
-                                        Date(authStore.getUser.email_verified_at)).toLocaleString('br') }}</span>
-                                    <span v-else>Não verificado</span>
-                                </p>
-                            </div>
-                            <div class="mb-2">
-                                <p class="text-subtitle-2 font-weight-regular">Nível de acesso:</p>
-                                <p class="font-weight-medium">{{ ALLOWED_LEVELS[authStore.getUser?.level].text }}</p>
-                            </div>
+                            <detail-group tooltip="Data de criação da conta" icon="mdi-calendar-outline" title="Registrado" :text="(new
+                                Date(authStore.getUser.created_at)).toLocaleString('br')" />
+
+                            <detail-group tooltip="Data de verificação da conta" icon="mdi-calendar-check-outline" title="Verificação"
+                                :text="authStore.getUser.email_verified_at ? (new
+                                    Date(authStore.getUser.created_at)).toLocaleString('br') : 'Não verificado'" />
+
+                            <detail-group tooltip="Nível de acesso do usuário" icon="mdi-license" title="Nível de acesso"
+                                :text="ALLOWED_LEVELS[authStore.getUser?.level].text" />
                         </template>
                     </content-elem>
                 </v-col>
@@ -149,6 +141,7 @@ import validator from '@/utils/validator';
 import { req } from '@/plugins/axios';
 import ContentElem from '@/components/ContentElem.vue';
 import ButtonConfirmation from '@/components/ButtonConfirmation.vue';
+import DetailGroup from '@/components/DetailGroup.vue';
 
 /**
  * 
