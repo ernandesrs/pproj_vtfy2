@@ -15,6 +15,10 @@ export const useAppStore = defineStore('app', {
 		app: null,
 		breadcrumbs: [],
 
+		page: {
+			title: null
+		},
+
 		alert: {}
 	}),
 
@@ -46,6 +50,10 @@ export const useAppStore = defineStore('app', {
 
 		getBreadcrumbs() {
 			return this.breadcrumbs;
+		},
+
+		getPageTitle() {
+			return this.page.title;
 		},
 
 		/**
@@ -88,6 +96,10 @@ export const useAppStore = defineStore('app', {
 			}
 
 			setTitlebar(this);
+		},
+
+		setPageTitle(title) {
+			this.page.title = title;
 		},
 
 		setApp(app, subname = null) {

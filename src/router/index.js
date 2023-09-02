@@ -42,7 +42,7 @@ const routes = [
   // /admin
   {
     path: '/admin',
-    component: () => import('@/layouts/admin/Layout.vue'),
+    component: () => import('@/layouts/admin/AdminLayout.vue'),
     beforeEnter: [
       middlewares.redirectIf.unauthenticated,
       middlewares.authorization.adminAccess,
@@ -53,6 +53,11 @@ const routes = [
         path: '',
         name: 'admin.home',
         component: () => import('@/views/admin/HomeView.vue')
+      },
+      {
+        path: 'perfil',
+        name: 'admin.profile',
+        component: () => import('@/views/admin/ProfileView.vue')
       }
     ]
   }

@@ -36,8 +36,13 @@ import { useAppStore } from '@/store/app';
 /**
  * Created
  */
-useAppStore().setBreadcrumbs([]);
-useAppStore().setPageTitle('Dashboard');
+useAppStore().setBreadcrumbs([
+    {
+        text: 'Perfil',
+        to: { name: 'admin.profile' },
+        disabled: true
+    }]);
+useAppStore().setPageTitle('Meu perfil');
 
 </script>
 
