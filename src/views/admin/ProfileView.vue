@@ -90,10 +90,32 @@
                 </v-col>
 
                 <v-col cols="12" md="5" lg="4" order="first" order-md="last">
-                    <content-elem title="Sua foto">
+                    <content-elem title="Sua foto" class="mb-6">
                         <template #content>
                             <div class="d-flex justify-center">
                                 <user-avatar :username="authStore.getFirstName" :photo_url="authStore?.getPhotoUrl" />
+                            </div>
+                        </template>
+                    </content-elem>
+
+                    <content-elem title="Detalhes da conta">
+                        <template #content>
+                            <div class="mb-2">
+                                <p class="text-subtitle-2 font-weight-regular">Criado em:</p>
+                                <p class="font-weight-medium">{{ (new
+                                    Date(authStore.getUser.created_at)).toLocaleString('br') }}</p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="text-subtitle-2 font-weight-regular">Verificado em:</p>
+                                <p class="font-weight-medium">
+                                    <span v-if="authStore.getUser.email_verified_at">{{ (new
+                                        Date(authStore.getUser.email_verified_at)).toLocaleString('br') }}</span>
+                                    <span v-else>Não verificado</span>
+                                </p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="text-subtitle-2 font-weight-regular">Nível de acesso:</p>
+                                <p class="font-weight-medium">{{ ALLOWED_LEVELS[authStore.getUser?.level].text }}</p>
                             </div>
                         </template>
                     </content-elem>
@@ -138,6 +160,21 @@ const ALLOWED_GENDERS = {
     f: {
         value: 'f',
         text: 'Feminino'
+    }
+};
+
+const ALLOWED_LEVELS = {
+    0: {
+        text: 'Comum',
+        value: 0
+    },
+    8: {
+        text: 'Administrativo',
+        value: 8
+    },
+    9: {
+        text: 'Super usuário',
+        value: 9
     }
 };
 

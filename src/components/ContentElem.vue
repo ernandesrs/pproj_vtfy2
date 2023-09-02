@@ -1,5 +1,5 @@
 <template>
-    <v-sheet>
+    <v-sheet class="mb-6">
         <v-card :elevation="props.borderless ? 0 : 1" class="px-6 py-6" :border="!props.borderless">
             <v-card-title v-if="title" class="font-weight-normal">
                 <v-icon v-if="icon" :icon="icon" class="mr-2" /> {{ title }}
