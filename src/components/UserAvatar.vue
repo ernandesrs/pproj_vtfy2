@@ -35,6 +35,7 @@ const props = defineProps({
     min-width: 175px;
     min-height: 175px;
     border-width: 5px !important;
+    overflow: hidden;
 }
 
 @media(min-width: 600px) {
