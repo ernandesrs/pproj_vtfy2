@@ -31,6 +31,9 @@ export default createVuetify({
     },
     VSelect: {
       variant: 'outlined'
+    },
+    VFileInput:{
+      variant: 'outlined'
     }
   },
   theme: {

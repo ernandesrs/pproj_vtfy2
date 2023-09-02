@@ -92,8 +92,20 @@
                 <v-col cols="12" md="5" lg="4" order="first" order-md="last">
                     <content-elem title="Sua foto" class="mb-6">
                         <template #content>
-                            <div class="d-flex justify-center">
+                            <div class="d-flex justify-center mb-5">
                                 <user-avatar :username="authStore.getFirstName" :photo_url="authStore?.getPhotoUrl" />
+                            </div>
+                            <div class="d-flex justify-center">
+                                <button-confirmation v-if="authStore.getPhotoUrl" text="Excluir foto"
+                                    icon="mdi-trash-can-outline" color="danger" outlined dialog-title="Excluir sua foto?"
+                                    dialog-text="Ao confirmar a exclusão da sua foto ela não poderá ser recuperada."
+                                    :confirm-callback="method_photoDelete" />
+                                <v-form v-else v-model="formPhoto.valid" fast-fail class="w-100">
+                                    <v-file-input @change="method_photoUpload" v-model="formPhoto.data.photo"
+                                        label="Nova foto" density="compact" accept="image/*" :rules="[validator.images]"
+                                        :error-messages="formPhoto.errors?.photo" :loading="formPhoto.submiting" />
+                                </v-form>
+                                <!--  -->
                             </div>
                         </template>
                     </content-elem>
@@ -136,6 +148,7 @@ import { ref } from 'vue';
 import validator from '@/utils/validator';
 import { req } from '@/plugins/axios';
 import ContentElem from '@/components/ContentElem.vue';
+import ButtonConfirmation from '@/components/ButtonConfirmation.vue';
 
 /**
  * 
@@ -197,6 +210,15 @@ const form = ref({
     errors: {}
 });
 
+const formPhoto = ref({
+    submiting: false,
+    valid: false,
+    data: {
+        photo: null,
+    },
+    errors: {}
+});
+
 /**
  * 
  * Computeds
@@ -239,6 +261,46 @@ const method_submit = () => {
         },
         finally: () => {
             form.value.submiting = false;
+        }
+    });
+};
+
+const method_photoUpload = () => {
+    if (!formPhoto.value.valid) {
+        appStore.addAlert().danger('Erro ao validar sua foto, verifique-a e tente novamente.', 'Erro ao validar!');
+        return;
+    }
+
+    let data = new FormData();
+
+    data.append('photo', formPhoto.value.data.photo[0]);
+
+    formPhoto.value.submiting = true;
+    return req({
+        action: '/me/photo-upload',
+        method: 'post',
+        data: data,
+        success: (resp) => {
+            formPhoto.value.data.photo = null;
+            appStore.addAlert().success('Sua foto foi atualizada com sucesso!', 'Foto atualizada!');
+            authStore.addUser(resp.data.user);
+        },
+        fail: (resp) => {
+            form.value.errors = resp.response.data.errors;
+        },
+        finally: () => {
+            formPhoto.value.submiting = false;
+        }
+    });
+}
+
+const method_photoDelete = () => {
+    return req({
+        action: '/me/photo-delete',
+        method: 'delete',
+        success: () => {
+            appStore.addAlert().info('Sua foto foi excluida definitvamente.', 'Foto excluída!');
+            authStore.user.photo_url = null;
         }
     });
 };
