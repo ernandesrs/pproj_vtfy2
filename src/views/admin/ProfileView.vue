@@ -1,10 +1,17 @@
 <template>
-    <div></div>
+    <base-view page-title="Meu perfil" :page-breadcrumbs="[
+        {
+            text: 'Perfil',
+            to: { name: 'admin.home' },
+            disabled: true
+        }
+    ]">
+    </base-view>
 </template>
 
 <script setup>
 
-import { useAppStore } from '@/store/app';
+import BaseView from '@/views/BaseView.vue';
 
 /**
  * 
@@ -36,14 +43,5 @@ import { useAppStore } from '@/store/app';
 /**
  * Created
  */
-useAppStore().setBreadcrumbs([
-    {
-        text: 'Perfil',
-        to: { name: 'admin.profile' },
-        disabled: true
-    }]);
-useAppStore().setPageTitle('Meu perfil');
 
 </script>
-
-<style lang="scss" scoped></style>

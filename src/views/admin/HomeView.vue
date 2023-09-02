@@ -1,10 +1,10 @@
 <template>
-    <div></div>
+    <base-view page-title="Dashboard" :page-breadcrumbs="[]"></base-view>
 </template>
 
 <script setup>
 
-import { useAppStore } from '@/store/app';
+import BaseView from '../BaseView.vue';
 
 /**
  * 
@@ -36,8 +36,6 @@ import { useAppStore } from '@/store/app';
 /**
  * Created
  */
-useAppStore().setBreadcrumbs([]);
-useAppStore().setPageTitle('Dashboard');
 
 </script>
 
