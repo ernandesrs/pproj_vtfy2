@@ -5,7 +5,7 @@
             to: { name: 'admin.home' },
             disabled: true
         }
-    ]">
+    ]" :requests="[]">
     </base-view>
 </template>
 

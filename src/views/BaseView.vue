@@ -1,10 +1,19 @@
 <template>
-    <slot name="content" />
+    <template v-if="data.loading">
+        <div class="text-center py-2">
+            <v-progress-circular indeterminate :size="40" :width="5" color="primary" />
+        </div>
+    </template>
+    <template v-else>
+        <slot name="content" />
+    </template>
 </template>
 
 <script setup>
 
 import { useAppStore } from '@/store/app';
+import { watch } from 'vue';
+import { ref } from 'vue';
 
 /**
  * 
@@ -19,6 +28,10 @@ const props = defineProps({
     pageBreadcrumbs: {
         type: Array,
         default: Array
+    },
+    requests: {
+        type: Array,
+        default: Array
     }
 });
 
@@ -27,6 +40,12 @@ const props = defineProps({
  * Vars, Refs ands Reactives
  * 
  */
+const appStore = useAppStore();
+
+const data = ref({
+    loading: true,
+    loadedContents: []
+});
 
 /**
  * 
@@ -36,17 +55,43 @@ const props = defineProps({
 /**
  * Methods
  */
+const method_loadContents = () => {
+    if (props.requests.length == 0) {
+        data.value.loading = false;
+        return;
+    }
+
+    data.value.loadedContents = [];
+    props.requests.map((funct) => {
+        try {
+            funct().finally(() => {
+                data.value.loadedContents.push(true);
+            });
+        } catch {
+            // 
+        }
+    });
+}
 
 /**
  * 
  * Watchers
  * 
  */
+watch(() => props.requests, () => {
+    method_loadContents();
+}, { deep: true, immediate: true });
+
+watch(() => data.value.loadedContents, (nv) => {
+    if (nv.length == props.requests.length) {
+        data.value.loading = false;
+    }
+}, { deep: true });
 
 /**
  * Created
  */
-useAppStore().setBreadcrumbs(props.pageBreadcrumbs);
-useAppStore().setPageTitle(props.pageTitle);
+appStore.setBreadcrumbs(props.pageBreadcrumbs);
+appStore.setPageTitle(props.pageTitle);
 
 </script>
