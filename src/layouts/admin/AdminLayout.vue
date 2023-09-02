@@ -55,8 +55,8 @@
         </v-app-bar>
         <!-- /appbar -->
 
-        <v-main class="ma-3 ma-md-6">
-            <v-container v-if="!['admin.home'].includes(route.name)" class="mb-3 mb-md-6">
+        <v-main>
+            <v-container v-if="!['admin.home'].includes(route.name)" class="mt-2 mt-md-3">
                 <div class="d-flex flex-column flex-md-row align-start align-md-center">
                     <h1 class="text-h6 text-md-h5 mr-2">{{ appStore.getPageTitle }}</h1>
                     <v-breadcrumbs density="compact"
@@ -65,11 +65,9 @@
                 </div>
             </v-container>
 
-            <v-sheet border height="100%">
-                <v-container>
-                    <router-view />
-                </v-container>
-            </v-sheet>
+            <v-container>
+                <router-view />
+            </v-container>
         </v-main>
     </v-layout>
 </template>

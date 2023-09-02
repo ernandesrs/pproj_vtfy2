@@ -6,12 +6,114 @@
             disabled: true
         }
     ]" :requests="[]">
+
+        <template #content>
+            <v-row>
+                <v-col cols="12" md="7" lg="8" order="last" order-md="first">
+                    <content-elem title="Seus dados">
+                        <template #content>
+                            <v-form v-model="form.valid" @submit.prevent="method_submit">
+                                <v-row class="pt-3">
+                                    <!-- first_name -->
+                                    <v-col cols="12" sm="6">
+                                        <v-text-field v-model="form.data.first_name"
+                                            :error-messages="form.errors?.first_name" :rules="[
+                                                validator.required,
+                                                validator.first_name
+                                            ]" label="Nome" />
+                                    </v-col>
+                                    <!-- /first_name -->
+
+                                    <!-- last_name -->
+                                    <v-col cols="12" sm="6">
+                                        <v-text-field v-model="form.data.last_name" :error-messages="form.errors?.last_name"
+                                            :rules="[
+                                                validator.required,
+                                                validator.last_name
+                                            ]" label="Sobrenome" />
+                                    </v-col>
+                                    <!-- /last_name -->
+
+                                    <!-- username -->
+                                    <v-col cols="12" sm="6">
+                                        <v-text-field v-model="form.data.username" :error-messages="form.errors?.username"
+                                            :rules="[
+                                                validator.required,
+                                                validator.first_name
+                                            ]" label="Sobrenome" />
+                                    </v-col>
+                                    <!-- /username -->
+
+                                    <!-- gender -->
+                                    <v-col cols="12" sm="6">
+                                        <v-select v-model="form.data.gender" :error-messages="form.errors?.gender" :rules="[
+                                            validator.required,
+                                            validator.gender
+                                        ]" label="Gênero"
+                                            :items="Object.entries(ALLOWED_GENDERS).map((ag) => { return { title: ag[1].text, value: ag[1].value }; })" />
+                                    </v-col>
+                                    <!-- /gender -->
+
+                                    <!-- email -->
+                                    <v-col cols="12">
+                                        <v-text-field v-model="form.data.email" :error-messages="form.errors?.email"
+                                            label="E-mail" readonly />
+                                    </v-col>
+                                    <!-- /email -->
+
+                                    <!-- password -->
+                                    <v-col cols="12" sm="6">
+                                        <v-text-field type="password" v-model="form.data.password"
+                                            :error-messages="form.errors?.password" label="Senha" />
+                                    </v-col>
+                                    <!-- /password -->
+
+                                    <!-- password_confirmation -->
+                                    <v-col cols="12" sm="6">
+                                        <v-text-field type="password" v-model="form.data.password_confirmation"
+                                            :error-messages="form.errors?.password_confirmation" label="Confirmar senha" />
+                                    </v-col>
+                                    <!-- /password_confirmation -->
+
+                                    <!-- submit -->
+                                    <v-col cols="12">
+                                        <div class="text-center">
+                                            <v-btn type="submit" text="Atualizar conta" color="primary"
+                                                prepend-icon="mdi-check" :loading="form.submiting" />
+                                        </div>
+                                    </v-col>
+                                    <!-- /submit -->
+                                </v-row>
+                            </v-form>
+                        </template>
+                    </content-elem>
+                </v-col>
+
+                <v-col cols="12" md="5" lg="4" order="first" order-md="last">
+                    <content-elem title="Sua foto">
+                        <template #content>
+                            <div class="d-flex justify-center">
+                                <user-avatar :username="authStore.getFirstName" :photo_url="authStore?.getPhotoUrl" />
+                            </div>
+                        </template>
+                    </content-elem>
+                </v-col>
+            </v-row>
+        </template>
+
     </base-view>
 </template>
 
 <script setup>
 
 import BaseView from '@/views/BaseView.vue';
+import { useAuthStore } from '@/store/user/auth';
+import { useAppStore } from '@/store/app';
+import UserAvatar from '@/components/UserAvatar.vue';
+import { ref } from 'vue';
+import validator from '@/utils/validator';
+import { req } from '@/plugins/axios';
+import ContentElem from '@/components/ContentElem.vue';
 
 /**
  * 
@@ -24,6 +126,39 @@ import BaseView from '@/views/BaseView.vue';
  * Vars, Refs ands Reactives
  * 
  */
+const ALLOWED_GENDERS = {
+    n: {
+        value: 'n',
+        text: 'Não definir'
+    },
+    m: {
+        value: 'm',
+        text: 'Masculino'
+    },
+    f: {
+        value: 'f',
+        text: 'Feminino'
+    }
+};
+
+const authStore = useAuthStore();
+
+const appStore = useAppStore();
+
+const form = ref({
+    submiting: false,
+    valid: false,
+    data: {
+        first_name: null,
+        last_name: null,
+        username: null,
+        gender: null,
+        email: null,
+        password: null,
+        password_confirmation: null,
+    },
+    errors: {}
+});
 
 /**
  * 
@@ -33,6 +168,43 @@ import BaseView from '@/views/BaseView.vue';
 /**
  * Methods
  */
+const method_getUser = () => {
+    form.value.data.first_name = authStore.getUser.first_name;
+    form.value.data.last_name = authStore.getUser.last_name;
+    form.value.data.username = authStore.getUser.username;
+    form.value.data.gender = authStore.getUser.gender;
+    form.value.data.email = authStore.getUser.email;
+};
+
+const method_submit = () => {
+    if (!form.value.valid) {
+        appStore.addAlert().missingData();
+        return;
+    }
+
+    let data = form.value.data;
+    if (!data.password?.length) {
+        delete data.password;
+        delete data.password_confirmation;
+    }
+
+    form.value.submiting = true;
+    req({
+        action: '/me/update',
+        method: 'put',
+        data: data,
+        success: (resp) => {
+            appStore.addAlert().info(authStore.getFirstName + ', seus dados foram atualizados com sucesso!', 'Atualizado!');
+            authStore.addUser(resp.data.user);
+        },
+        fail: (resp) => {
+            form.value.errors = resp.response.data.errors;
+        },
+        finally: () => {
+            form.value.submiting = false;
+        }
+    });
+};
 
 /**
  * 
@@ -43,5 +215,6 @@ import BaseView from '@/views/BaseView.vue';
 /**
  * Created
  */
+method_getUser();
 
 </script>

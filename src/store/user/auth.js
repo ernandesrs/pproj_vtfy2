@@ -29,6 +29,26 @@ export const useAuthStore = defineStore('auth', {
          */
         hasAdminAccess() {
             return adminAccessLevels.includes(this.user?.level);
+        },
+
+        getUser() {
+            return this.user;
+        },
+
+        getFirstName() {
+            return this.user.first_name;
+        },
+
+        getLastName() {
+            return this.user.last_name;
+        },
+
+        getFullName() {
+            return this.getFirstName + ' ' + this.getLastName;
+        },
+
+        getPhotoUrl() {
+            return this.user?.photo_url ?? null;
         }
     },
 
