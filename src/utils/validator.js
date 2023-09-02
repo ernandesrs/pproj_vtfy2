@@ -20,5 +20,19 @@ export default {
     },
     password: value => {
         return value.length >= 6 ? true : 'Mínimo 6 caracteres'
+    },
+    images: value => {
+        const mimes = [
+            'image/jpg',
+            'image/jpeg',
+            'image/png',
+        ]
+        const image = value ? value[0] ?? null : null;
+
+        if (!image) {
+            return true;
+        }
+
+        return mimes.includes(image.type) ? true : 'Tipo de imagem não aceita';
     }
 };
