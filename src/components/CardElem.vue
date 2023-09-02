@@ -10,7 +10,7 @@
             </div>
         </v-card-item>
         <v-card-actions v-if="action?.to?.name">
-            <v-btn :to="action?.to" :text="action?.text" append-icon="mdi-arrow-right" variant="plain"></v-btn>
+            <v-btn :to="action?.to" :text="action?.text" append-icon="mdi-arrow-right" variant="plain" size="small"></v-btn>
         </v-card-actions>
     </v-card>
 </template>
