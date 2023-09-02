@@ -1,7 +1,8 @@
 <template>
     <v-snackbar v-model="data.show" variant="text" :timeout="data.alert.timer" location="right top">
         <v-alert @click:close="method_close" :icon="computed_icon" :title="data.alert.title" :text="data.alert.text"
-            :color="computed_color" closable close-label="Fechar" border variant="elevated" elevation="3"></v-alert>
+            :color="computed_color" closable close-label="Fechar" border variant="elevated" elevation="3"
+            style="width: 100%; max-width: 400px;"></v-alert>
     </v-snackbar>
 </template>
 
