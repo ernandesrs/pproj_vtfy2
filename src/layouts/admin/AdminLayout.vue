@@ -4,13 +4,13 @@
     <v-layout>
 
         <!-- navigation -->
-        <v-navigation-drawer v-model="showNavigation" elevation="10" class="pa-4">
+        <v-navigation-drawer v-model="showNavigation" elevation="10" color="navigation-bg" class="pa-4">
             <!-- head -->
             <div class="text-center mb-3">
                 <v-icon icon="$vuetify" :size="75"></v-icon>
                 <v-app-bar-title>
-                    <span class="font-weight-bold">{{ appStore.getName }}</span><span
-                        class="font-weight-light">{{ appStore.getSubname }}</span>
+                    <span class="font-weight-bold">{{ appStore.getName }}</span><span class="font-weight-light">{{
+                        appStore.getSubname }}</span>
                 </v-app-bar-title>
             </div>
             <!-- /head -->
