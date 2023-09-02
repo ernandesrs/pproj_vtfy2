@@ -128,7 +128,7 @@
 
 <script setup>
 
-import BaseView from '@/views/BaseView.vue';
+import BaseView from '@/views/partials/BaseView.vue';
 import { useAuthStore } from '@/store/user/auth';
 import { useAppStore } from '@/store/app';
 import UserAvatar from '@/components/UserAvatar.vue';

@@ -47,7 +47,7 @@
 <script setup>
 
 import { req } from '@/plugins/axios';
-import BaseView from '../BaseView.vue';
+import BaseView from '../partials/BaseView.vue';
 import { ref } from 'vue';
 import CardElem from '@/components/CardElem.vue';
 import ContentElem from '@/components/ContentElem.vue';
