@@ -58,6 +58,11 @@ const routes = [
         path: 'perfil',
         name: 'admin.profile',
         component: () => import('@/views/admin/ProfileView.vue')
+      },
+      {
+        path: 'usuarios',
+        name: 'admin.users',
+        component: () => import('@/views/admin/users/ListView.vue')
       }
     ]
   }

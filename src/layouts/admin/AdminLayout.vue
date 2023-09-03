@@ -107,6 +107,12 @@ const navItems = [
         activeIn: ['admin.home']
     },
     {
+        text: 'Usuários',
+        to: { name: 'admin.users' },
+        icon: 'mdi-account-group',
+        activeIn: ['admin.users']
+    },
+    {
         text: 'Configurações',
         icon: 'mdi-cog',
         activeIn: [],
