@@ -2,30 +2,11 @@
 import { defineStore } from 'pinia';
 import { add as alert_add, get as alert_get } from '@/utils/alert';
 
-const setTitlebar = (appInstance) => {
-	document.title = '[' + appInstance.name + (appInstance.subname ? ' ' + appInstance.subname : '') + '] ' + appInstance.breadcrumbs.map((bread) => {
-		return bread.text;
-	}).join(' » ');
-}
-
 export const useAppStore = defineStore('app', {
 	state: () => ({
 		name: import.meta.env.VITE_APP_NAME,
 		subname: null,
 		app: null,
-		breadcrumbs: [],
-
-		page: {
-			title: null,
-			actions: {
-				create: {
-					callback: null,
-					to: null,
-					text: 'Novo',
-					icon: 'mdi-plus'
-				}
-			}
-		},
 
 		alert: {}
 	}),
@@ -56,18 +37,6 @@ export const useAppStore = defineStore('app', {
 			return this.app == 'auth';
 		},
 
-		getBreadcrumbs() {
-			return this.breadcrumbs;
-		},
-
-		getPageTitle() {
-			return this.page.title;
-		},
-
-		getPageCreateAction() {
-			return this.page.actions.create;
-		},
-
 		/**
 		 * 
 		 * Alert
@@ -91,38 +60,6 @@ export const useAppStore = defineStore('app', {
 	},
 
 	actions: {
-		setBreadcrumbs(breadcrumbs = []) {
-			if (this.inAdmin) {
-				this.breadcrumbs = [
-					{
-						text: 'Início',
-						to: {
-							name: this.inAdmin ? 'admin.home' : ''
-						},
-						disabled: false
-					},
-					...breadcrumbs
-				];
-			} else {
-				this.breadcrumbs = breadcrumbs;
-			}
-
-			setTitlebar(this);
-		},
-
-		setPageTitle(title) {
-			this.page.title = title;
-		},
-
-		setPageCreateAction(create = {
-			callback: null,
-			to: null,
-			text: 'Novo',
-			icon: 'mdi-plus'
-		}) {
-			this.page.actions.create = create;
-		},
-
 		setApp(app, subname = null) {
 			this.app = app;
 			this.subname = subname;

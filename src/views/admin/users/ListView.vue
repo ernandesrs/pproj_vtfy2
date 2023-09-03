@@ -7,7 +7,7 @@
         }
     ]" :requests="[
     method_getUsers
-]" :page-create-action="{
+]" :create-action="{
     text: 'Novo usuário',
     to: { name: 'admin.users.create' }
 }">

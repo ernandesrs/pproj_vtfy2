@@ -1,19 +1,39 @@
 <template>
+    <v-container v-if="!['admin.home'].includes(route.name)" class="mt-2 mt-md-3 d-flex align-center justify-space-between">
+        <div class="d-flex flex-column flex-md-row align-start align-md-center">
+            <h1 class="text-h6 text-md-h5 mr-2">{{ props.pageTitle }}</h1>
+            <v-breadcrumbs density="compact"
+                :items="data.breadcrumbs.map(b => { return { title: b.text, to: b.to, disabled: b.disabled } })"
+                class="px-0 px-md-4" />
+        </div>
+
+        <!-- actions -->
+        <div>
+            <v-btn-group>
+                <v-btn v-if="props.createAction?.to || props.createAction?.callback" @click.stop="method_createAction"
+                    :color="props.createAction?.color ?? 'success'" :prepend-icon="props.createAction?.icon ?? 'mdi-plus'"
+                    :text="props.createAction?.text ?? 'Novo'" />
+            </v-btn-group>
+        </div>
+    </v-container>
+
     <template v-if="data.loading">
         <div class="text-center py-2">
             <v-progress-circular indeterminate :size="40" :width="5" color="primary" />
         </div>
     </template>
     <template v-else>
-        <slot name="content" />
+        <v-container>
+            <slot name="content" />
+        </v-container>
     </template>
 </template>
 
 <script setup>
 
 import { useAppStore } from '@/store/app';
-import { watch } from 'vue';
-import { ref } from 'vue';
+import { watch, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 /**
  * 
@@ -29,7 +49,7 @@ const props = defineProps({
         type: Array,
         default: Array
     },
-    pageCreateAction: {
+    createAction: {
         type: [Object, null],
         default: null
     },
@@ -46,9 +66,14 @@ const props = defineProps({
  */
 const appStore = useAppStore();
 
+const router = useRouter();
+
+const route = useRoute();
+
 const data = ref({
     loading: true,
-    loadedContents: []
+    loadedContents: [],
+    breadcrumbs: []
 });
 
 /**
@@ -77,6 +102,21 @@ const method_loadContents = () => {
     });
 }
 
+const method_createAction = () => {
+    if (props.createAction?.to) {
+        router.push(props.createAction.to);
+        return;
+    }
+
+    props.createAction?.callback();
+}
+
+const method_setTitlebar = (breadcrumbs) => {
+    document.title = '[' + appStore.getName + (appStore.getSubname ? ' ' + appStore.getSubname : '') + '] ' + breadcrumbs.map((bread) => {
+        return bread.text;
+    }).join(' » ');
+}
+
 /**
  * 
  * Watchers
@@ -86,20 +126,35 @@ watch(() => props.requests, () => {
     method_loadContents();
 }, { deep: true, immediate: true });
 
+watch(() => props.pageBreadcrumbs, (nv) => {
+    if (appStore.inAdmin) {
+        data.value.breadcrumbs = [
+            {
+                text: 'Início',
+                to: {
+                    name: appStore.inAdmin ? 'admin.home' : ''
+                },
+                disabled: false
+            },
+            ...nv
+        ];
+    } else {
+        data.value.breadcrumbs = nv;
+    }
+}, { deep: true, immediate: true });
+
 watch(() => data.value.loadedContents, (nv) => {
     if (nv.length == props.requests.length) {
         data.value.loading = false;
     }
 }, { deep: true });
 
-watch(() => props.pageCreateAction, (nv) => {
-    appStore.setPageCreateAction(nv);
+watch(() => data.value.breadcrumbs, (nv) => {
+    method_setTitlebar(nv);
 }, { deep: true, immediate: true });
 
 /**
  * Created
  */
-appStore.setBreadcrumbs(props.pageBreadcrumbs);
-appStore.setPageTitle(props.pageTitle);
 
 </script>
