@@ -1,34 +1,40 @@
 <template>
-    <v-row justify="center">
-        <v-col cols="12">
-            <h1>Login</h1>
-        </v-col>
+    <base-view :page-breadcrumbs="[
+        {
+            text: 'Acessar conta'
+        }
+    ]">
+        <v-row justify="center">
+            <v-col cols="12">
+                <h1>Login</h1>
+            </v-col>
 
-        <v-col cols="12">
-            <v-form v-model="form.valid" @submit.prevent="method_login">
-                <v-row>
-                    <v-col cols="12">
-                        <v-text-field label="E-mail" v-model="form.data.email" :error-messages="form.errors?.email"
-                            :rules="[validator.required, validator.email]" />
-                    </v-col>
+            <v-col cols="12">
+                <v-form v-model="form.valid" @submit.prevent="method_login">
+                    <v-row>
+                        <v-col cols="12">
+                            <v-text-field label="E-mail" v-model="form.data.email" :error-messages="form.errors?.email"
+                                :rules="[validator.required, validator.email]" />
+                        </v-col>
 
-                    <v-col cols="12">
-                        <v-text-field :type="showPassword ? 'text' : 'password'" v-model="form.data.password"
-                            :error-messages="form.errors?.password" :rules="[validator.required, validator.password]"
-                            :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                            @click:append-inner="showPassword = !showPassword" label="Senha" />
-                    </v-col>
+                        <v-col cols="12">
+                            <v-text-field :type="showPassword ? 'text' : 'password'" v-model="form.data.password"
+                                :error-messages="form.errors?.password" :rules="[validator.required, validator.password]"
+                                :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                                @click:append-inner="showPassword = !showPassword" label="Senha" />
+                        </v-col>
 
-                    <v-col cols="12" class="d-flex align-center justify-space-between">
-                        <v-btn :to="{ name: 'auth.register' }" prepend-icon="mdi-account" text="Criar conta" color="primary"
-                            size="large" variant="plain" />
-                        <v-btn type="submit" append-icon="mdi-arrow-right" text="Acessar" color="primary" size="large"
-                            :loading="form.submitting" />
-                    </v-col>
-                </v-row>
-            </v-form>
-        </v-col>
-    </v-row>
+                        <v-col cols="12" class="d-flex align-center justify-space-between">
+                            <v-btn :to="{ name: 'auth.register' }" prepend-icon="mdi-account" text="Criar conta"
+                                color="primary" size="large" variant="plain" />
+                            <v-btn type="submit" append-icon="mdi-arrow-right" text="Acessar" color="primary" size="large"
+                                :loading="form.submitting" />
+                        </v-col>
+                    </v-row>
+                </v-form>
+            </v-col>
+        </v-row>
+    </base-view>
 </template>
 
 <script setup>
@@ -37,6 +43,7 @@ import { useAppStore } from '@/store/app';
 import { useAuthStore } from '@/store/user/auth';
 import { ref } from 'vue';
 import validator from '@/utils/validator';
+import BaseView from '@/layouts/auth/BaseView.vue';
 
 /**
  * 
@@ -98,10 +105,5 @@ const method_login = () => {
 /**
  * Created
  */
-appStore.setBreadcrumbs([
-    {
-        text: 'Acessar conta'
-    }
-]);
 
 </script>

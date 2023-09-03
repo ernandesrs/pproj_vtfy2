@@ -1,7 +1,7 @@
 <template>
-    <alert-elem />
-
     <v-app>
+        <alert-elem />
+
         <v-main class="d-flex align-center justify-center pa-6">
             <v-row justify="center">
                 <v-col cols="12" sm="10" lg="10">
@@ -33,7 +33,7 @@ import { useAppStore } from '@/store/app';
 import { computed } from 'vue';
 
 /**
- * Computed
+ * Computeds
  */
 const computed_appStore = computed(() => {
     return useAppStore();
