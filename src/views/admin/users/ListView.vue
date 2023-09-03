@@ -7,12 +7,17 @@
         }
     ]" :requests="[
     method_getUsers
-]">
+]" :page-create-action="{
+    text: 'Novo usuário',
+    callback: () => {
+        console.log('Opa');
+    }
+}">
         <template #content>
             <content-elem>
                 <template #content>
 
-                    <v-table density="confortable" hover>
+                    <v-table hover>
                         <thead>
                             <tr>
                                 <td>Usuário</td>

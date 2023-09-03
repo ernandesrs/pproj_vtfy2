@@ -56,12 +56,23 @@
         <!-- /appbar -->
 
         <v-main>
-            <v-container v-if="!['admin.home'].includes(route.name)" class="mt-2 mt-md-3">
+            <v-container v-if="!['admin.home'].includes(route.name)"
+                class="mt-2 mt-md-3 d-flex align-center justify-space-between">
                 <div class="d-flex flex-column flex-md-row align-start align-md-center">
                     <h1 class="text-h6 text-md-h5 mr-2">{{ appStore.getPageTitle }}</h1>
                     <v-breadcrumbs density="compact"
                         :items="appStore.getBreadcrumbs.map(b => { return { title: b.text, to: b.to, disabled: b.disabled } })"
                         class="px-0 px-md-4" />
+                </div>
+
+                <!-- actions -->
+                <div>
+                    <v-btn-group>
+                        <v-btn v-if="appStore.getPageCreateAction?.to || appStore.getPageCreateAction?.callback"
+                            @click.stop="method_createAction" :color="appStore.getPageCreateAction?.color ?? 'success'"
+                            :prepend-icon="appStore.getPageCreateAction?.icon ?? 'mdi-plus'"
+                            :text="appStore.getPageCreateAction?.text ?? 'Novo'" />
+                    </v-btn-group>
                 </div>
             </v-container>
 
@@ -77,7 +88,7 @@
 import AlertElem from '@/components/AlertElem.vue';
 import { ref } from 'vue';
 import { useAppStore } from '@/store/app';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/user/auth';
 
 /**
@@ -96,6 +107,8 @@ const appStore = useAppStore();
 const authStore = useAuthStore();
 
 const route = useRoute();
+
+const router = useRouter();
 
 const showNavigation = ref(true);
 
@@ -146,6 +159,15 @@ const method_navigationStatus = () => {
         showNavigation.value = false;
     }
 };
+
+const method_createAction = () => {
+    if (appStore.getPageCreateAction?.to) {
+        router.push(appStore.getPageCreateAction.to);
+        return;
+    }
+
+    appStore.getPageCreateAction?.callback();
+}
 
 /**
  * 

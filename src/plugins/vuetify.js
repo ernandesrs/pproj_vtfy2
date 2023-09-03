@@ -24,7 +24,11 @@ export default createVuetify({
       rounded: true
     },
     VBtn: {
-      class: 'text-none'
+      class: 'text-none',
+      rounded: true
+    },
+    VBtnGroup: {
+      rounded: true
     },
     VTextField: {
       variant: 'outlined'
@@ -32,7 +36,7 @@ export default createVuetify({
     VSelect: {
       variant: 'outlined'
     },
-    VFileInput:{
+    VFileInput: {
       variant: 'outlined'
     }
   },

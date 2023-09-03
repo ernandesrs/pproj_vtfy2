@@ -16,7 +16,15 @@ export const useAppStore = defineStore('app', {
 		breadcrumbs: [],
 
 		page: {
-			title: null
+			title: null,
+			actions: {
+				create: {
+					callback: null,
+					to: null,
+					text: 'Novo',
+					icon: 'mdi-plus'
+				}
+			}
 		},
 
 		alert: {}
@@ -54,6 +62,10 @@ export const useAppStore = defineStore('app', {
 
 		getPageTitle() {
 			return this.page.title;
+		},
+
+		getPageCreateAction() {
+			return this.page.actions.create;
 		},
 
 		/**
@@ -100,6 +112,15 @@ export const useAppStore = defineStore('app', {
 
 		setPageTitle(title) {
 			this.page.title = title;
+		},
+
+		setPageCreateAction(create = {
+			callback: null,
+			to: null,
+			text: 'Novo',
+			icon: 'mdi-plus'
+		}) {
+			this.page.actions.create = create;
 		},
 
 		setApp(app, subname = null) {

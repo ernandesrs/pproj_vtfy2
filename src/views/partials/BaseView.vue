@@ -29,6 +29,10 @@ const props = defineProps({
         type: Array,
         default: Array
     },
+    pageCreateAction: {
+        type: [Object, null],
+        default: null
+    },
     requests: {
         type: Array,
         default: Array
@@ -87,6 +91,10 @@ watch(() => data.value.loadedContents, (nv) => {
         data.value.loading = false;
     }
 }, { deep: true });
+
+watch(() => props.pageCreateAction, (nv) => {
+    appStore.setPageCreateAction(nv);
+}, { deep: true, immediate: true });
 
 /**
  * Created
