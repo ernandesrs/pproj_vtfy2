@@ -123,7 +123,7 @@ const navItems = [
         text: 'Usuários',
         to: { name: 'admin.users' },
         icon: 'mdi-account-group',
-        activeIn: ['admin.users']
+        activeIn: ['admin.users', 'admin.users.create', 'admin.users.edit']
     },
     {
         text: 'Configurações',

@@ -63,6 +63,16 @@ const routes = [
         path: 'usuarios',
         name: 'admin.users',
         component: () => import('@/views/admin/users/ListView.vue')
+      },
+      {
+        path: 'usuarios/criar',
+        name: 'admin.users.create',
+        component: () => import('@/views/admin/users/FormView.vue')
+      },
+      {
+        path: 'usuarios/:user_id/editar',
+        name: 'admin.users.edit',
+        component: () => import('@/views/admin/users/FormView.vue')
       }
     ]
   }

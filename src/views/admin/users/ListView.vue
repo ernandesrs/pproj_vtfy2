@@ -9,9 +9,7 @@
     method_getUsers
 ]" :page-create-action="{
     text: 'Novo usuário',
-    callback: () => {
-        console.log('Opa');
-    }
+    to: { name: 'admin.users.create' }
 }">
         <template #content>
             <content-elem>
@@ -23,7 +21,7 @@
                                 <td>Usuário</td>
                                 <td>E-mail</td>
                                 <td class="d-none d-md-table-cell">Acesso</td>
-                                <td class="py-4">Ações</td>
+                                <td class="py-4 text-right">Ações</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,10 +37,11 @@
                                         0: 'Usuário', 8: 'Administrador', 9: 'Super usuário'
                                     }[item.level] }}
                                 </td>
-                                <td class="py-4">
+                                <td class="py-4 text-right">
                                     <v-btn-group>
                                         <v-btn icon="mdi-eye-outline" color="info" variant="outlined" />
-                                        <v-btn icon="mdi-pencil-box-outline" color="primary" />
+                                        <v-btn icon="mdi-pencil-box-outline" color="primary"
+                                            :to="{ name: 'admin.users.edit', params: { user_id: item.id } }" />
                                         <button-confirmation icon="mdi-trash-can-outline" color="danger" outlined
                                             :dialog-title="'Excluir ' + item.first_name + ' ' + item.last_name + '?'"
                                             dialog-text="Ao confirmar a exclusão, os dados do usuário não poderão ser recuperados." />
