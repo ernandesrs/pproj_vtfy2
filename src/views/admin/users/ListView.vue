@@ -62,7 +62,7 @@
 import ButtonConfirmation from '@/components/ButtonConfirmation.vue';
 import ContentElem from '@/components/ContentElem.vue';
 import { req } from '@/plugins/axios';
-import BaseView from '@/views/partials/BaseView';
+import BaseView from '@/layouts/admin/BaseView';
 import { ref } from 'vue';
 
 /**

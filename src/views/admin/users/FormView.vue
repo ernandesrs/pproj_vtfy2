@@ -26,7 +26,7 @@
 <script setup>
 
 import ContentElem from '@/components/ContentElem.vue';
-import BaseView from '@/views/partials/BaseView';
+import BaseView from '@/layouts/admin/BaseView';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
