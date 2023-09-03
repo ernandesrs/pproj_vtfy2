@@ -97,7 +97,7 @@
                             </div>
                             <div class="d-flex justify-center">
                                 <button-confirmation v-if="authStore.getPhotoUrl" text="Excluir foto"
-                                    icon="mdi-trash-can-outline" color="danger" outlined dialog-title="Excluir sua foto?"
+                                    icon="mdi-trash-can-outline" color="danger" variant="outlined" dialog-title="Excluir sua foto?"
                                     dialog-text="Ao confirmar a exclusão da sua foto ela não poderá ser recuperada."
                                     :confirm-callback="method_photoDelete" />
                                 <v-form v-else v-model="formPhoto.valid" fast-fail class="w-100">

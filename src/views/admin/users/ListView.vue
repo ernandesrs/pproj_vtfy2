@@ -38,13 +38,14 @@
                                     }[item.level] }}
                                 </td>
                                 <td class="py-4 text-right">
-                                    <v-btn-group>
-                                        <v-btn icon="mdi-eye-outline" color="info" variant="outlined" />
+                                    <v-btn-group variant="text">
+                                        <v-btn icon="mdi-eye-outline" color="info" size="small" />
                                         <v-btn icon="mdi-pencil-box-outline" color="primary"
-                                            :to="{ name: 'admin.users.edit', params: { user_id: item.id } }" />
-                                        <button-confirmation icon="mdi-trash-can-outline" color="danger" outlined
+                                            :to="{ name: 'admin.users.edit', params: { user_id: item.id } }" size="small" />
+                                        <button-confirmation icon="mdi-trash-can-outline" color="danger"
                                             :dialog-title="'Excluir ' + item.first_name + ' ' + item.last_name + '?'"
-                                            dialog-text="Ao confirmar a exclusão, os dados do usuário não poderão ser recuperados." />
+                                            dialog-text="Ao confirmar a exclusão, os dados do usuário não poderão ser recuperados."
+                                            size="small" />
                                     </v-btn-group>
                                 </td>
                             </tr>

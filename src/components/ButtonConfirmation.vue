@@ -1,7 +1,7 @@
 <template>
     <v-btn @click.stop="data.waitingConfirmation = !data.waitingConfirmation" :text="props.text" :color="props.color"
-        :prepend-icon="props.text ? props.icon : null" :icon="props.text ? null : props.icon"
-        :variant="props.outlined ? 'outlined' : 'elevated'" :loading="data.waitingConfirmation" />
+        :prepend-icon="props.text ? props.icon : null" :icon="props.text ? null : props.icon" :variant="props.variant"
+        :loading="data.waitingConfirmation" v-bind="props?.size ? { size: props.size } : {}" />
 
     <v-dialog v-model="data.waitingConfirmation" width="auto">
         <v-card style="width: 100%; max-width: 375px;">
@@ -40,9 +40,13 @@ const props = defineProps({
         type: [String, null],
         default: null
     },
-    outlined: {
-        type: [Boolean],
-        default: false
+    variant: {
+        type: [String],
+        default: null
+    },
+    size: {
+        type: String,
+        default: null
     },
     dialogTitle: {
         type: [String, null],
