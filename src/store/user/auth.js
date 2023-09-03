@@ -4,8 +4,11 @@ import { request } from '@/plugins/axios';
 import token from '@/utils/token';
 import { useAppStore } from '../app';
 import router from '@/router';
+import permissions from '@/core/permissions';
 
-const adminAccessLevels = [8, 9];
+const SUPER_LEVEL = 9;
+const ADMIN_LEVEL = 8;
+const adminAccessLevels = [SUPER_LEVEL, ADMIN_LEVEL];
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -21,6 +24,10 @@ export const useAuthStore = defineStore('auth', {
          */
         isAuth() {
             return this.user?.id ? true : false;
+        },
+
+        isSuperuser() {
+            return this.user.level == SUPER_LEVEL;
         },
 
         /**
@@ -49,6 +56,10 @@ export const useAuthStore = defineStore('auth', {
 
         getPhotoUrl() {
             return this.user?.photo_url ?? null;
+        },
+
+        permission() {
+            return permissions.addUser(this).addResource;
         }
     },
 

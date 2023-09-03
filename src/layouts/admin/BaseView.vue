@@ -10,7 +10,7 @@
         <!-- actions -->
         <div>
             <v-btn-group density="compact">
-                <v-btn v-if="props.createAction?.to || props.createAction?.callback" @click.stop="method_createAction"
+                <v-btn v-if="props.createAction?.show && props.createAction?.to || props.createAction?.callback" @click.stop="method_createAction"
                     :color="props.createAction?.color ?? 'success'" :prepend-icon="props.createAction?.icon ?? 'mdi-plus'"
                     :text="props.createAction?.text ?? 'Novo'" />
             </v-btn-group>

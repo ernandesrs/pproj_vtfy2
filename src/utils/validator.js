@@ -19,7 +19,7 @@ export default {
         return value.length > 1 ? true : 'Mínimo 2 caracteres'
     },
     password: value => {
-        return value.length >= 6 ? true : 'Mínimo 6 caracteres'
+        return value.length >= 5 ? true : 'Mínimo 6 caracteres'
     },
     images: value => {
         const mimes = [

@@ -9,7 +9,8 @@
     method_getUsers
 ]" :create-action="{
     text: 'Novo usuário',
-    to: { name: 'admin.users.create' }
+    to: { name: 'admin.users.create' },
+    show: authStore.permission('user').canCreate()
 }">
         <template #content>
             <content-elem>
@@ -39,10 +40,13 @@
                                 </td>
                                 <td class="py-4 text-right">
                                     <v-btn-group variant="text">
-                                        <v-btn icon="mdi-eye-outline" color="info" size="small" />
-                                        <v-btn icon="mdi-pencil-box-outline" color="primary"
-                                            :to="{ name: 'admin.users.edit', params: { user_id: item.id } }" size="small" />
-                                        <button-confirmation icon="mdi-trash-can-outline" color="danger"
+                                        <v-btn v-if="authStore.permission('user').canView()" icon="mdi-eye-outline"
+                                            color="info" size="small" />
+                                        <v-btn v-if="authStore.permission('user').canUpdate()" icon="mdi-pencil-box-outline"
+                                            color="primary" :to="{ name: 'admin.users.edit', params: { user_id: item.id } }"
+                                            size="small" />
+                                        <button-confirmation v-if="authStore.permission('user').canDelete()"
+                                            icon="mdi-trash-can-outline" color="danger"
                                             :dialog-title="'Excluir ' + item.first_name + ' ' + item.last_name + '?'"
                                             dialog-text="Ao confirmar a exclusão, os dados do usuário não poderão ser recuperados."
                                             size="small" />
@@ -65,12 +69,15 @@ import ContentElem from '@/components/ContentElem.vue';
 import { req } from '@/plugins/axios';
 import BaseView from '@/layouts/admin/BaseView';
 import { ref } from 'vue';
+import { useAuthStore } from '@/store/user/auth';
 
 /**
  * 
  * Vars, refs, reactives
  * 
  */
+const authStore = useAuthStore();
+
 const data = ref({
     users: []
 });
