@@ -119,12 +119,6 @@
                                     dialog-title="Excluir a foto?"
                                     dialog-text="Ao confirmar a exclusão da foto ela não poderá ser recuperada."
                                     :confirm-callback="method_photoDelete" />
-                                <v-form v-else v-model="formPhoto.valid" fast-fail class="w-100">
-                                    <v-file-input @change="method_photoUpload" v-model="formPhoto.data.photo"
-                                        label="Nova foto" density="compact" accept="image/*" :rules="[validator.images]"
-                                        :error-messages="formPhoto.errors?.photo" :loading="formPhoto.submiting" />
-                                </v-form>
-                                <!--  -->
                             </div>
                         </template>
                     </content-elem>
@@ -158,6 +152,7 @@ import DetailGroup from '@/components/DetailGroup.vue';
 import UserAvatar from '@/components/UserAvatar.vue';
 import BaseView from '@/layouts/admin/BaseView';
 import { req } from '@/plugins/axios';
+import { useAppStore } from '@/store/app';
 import validator from '@/utils/validator';
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
@@ -197,6 +192,8 @@ const ALLOWED_LEVELS = {
     }
 };
 
+const appStore = useAppStore();
+
 const route = useRoute();
 
 const form = ref({
@@ -210,15 +207,6 @@ const form = ref({
         email: null,
         password: null,
         password_confirmation: null
-    },
-    errors: {}
-});
-
-const formPhoto = ref({
-    valid: false,
-    submiting: false,
-    data: {
-        photo: null
     },
     errors: {}
 });
@@ -254,13 +242,15 @@ const method_submit = () => {
     // 
 };
 
-
-const method_photoUpload = () => {
-    // 
-};
-
 const method_photoDelete = () => {
-    // 
+    return req({
+        action: '/admin/users/' + form.value.data?.id + '/photo-delete',
+        method: 'delete',
+        success: () => {
+            appStore.addAlert().info('A foto do usuário foi excluída com sucesso.', 'Excluída!');
+            form.value.data.photo_url = null;
+        }
+    });
 }
 
 /**
