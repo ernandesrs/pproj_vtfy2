@@ -190,8 +190,7 @@ import { req } from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
 import { useAuthStore } from '@/store/user/auth';
 import validator from '@/utils/validator';
-import { watch } from 'vue';
-import { ref, computed, onUpdated } from 'vue';
+import { watch, ref, computed, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 /**
