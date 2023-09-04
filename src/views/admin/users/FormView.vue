@@ -12,7 +12,11 @@
         }
     ]" :requests="computed_isCreating ? [] : [
     method_getUser
-]">
+]" :create-action="{
+    text: 'Novo usuário',
+    to: { name: 'admin.users.create' },
+    show: authStore.permission('user').canCreate() && route.name == 'admin.users.edit'
+}">
 
         <template #content>
             <v-row justify="center">
@@ -153,6 +157,7 @@ import UserAvatar from '@/components/UserAvatar.vue';
 import BaseView from '@/layouts/admin/BaseView';
 import { req } from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
+import { useAuthStore } from '@/store/user/auth';
 import validator from '@/utils/validator';
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -193,6 +198,8 @@ const ALLOWED_LEVELS = {
 };
 
 const appStore = useAppStore();
+
+const authStore = useAuthStore();
 
 const route = useRoute();
 
