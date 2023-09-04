@@ -11,7 +11,8 @@
             disabled: true
         }
     ]" :requests="computed_isCreating ? [] : [
-    method_getUser
+    method_getUser,
+    method_getRoles
 ]" :create-action="{
     text: 'Novo usuário',
     to: { name: 'admin.users.create' },
@@ -126,10 +127,10 @@
                             </div>
                         </template>
                     </content-elem>
-                    <content-elem v-if="authStore.isSuperuser" title="Nível e funções" class="mb-6">
 
+                    <content-elem v-if="authStore.isSuperuser && authStore.getUser.id != form.data.id"
+                        title="Nível e funções" class="mb-6">
                         <template #content>
-
                             <confirmation-dialog v-model="formLevel.showConfirmationDialog"
                                 :confirm-callback="method_updateLevelConfirmed"
                                 :cancel-callback="method_updateLevelCanceled" color="warning" title="Atenção!"
@@ -143,6 +144,15 @@
                                     }
                                 })" :rules="[]" :error-messages="formLevel.errors?.level"
                                     :loading="formLevel.submiting" :disabled="formLevel.submiting" />
+                            </v-form>
+
+                            <v-form v-if="form.data.level === 8">
+                                <v-select label="Funções" v-model="formRoles.data.roles" :items="Object.entries(roles.list).map((r) => {
+                                    return {
+                                        title: r[1].display_name,
+                                        value: r[1].id
+                                    };
+                                })" multiple :loading="formRoles.submiting" :disabled="formRoles.submiting" />
                             </v-form>
                         </template>
                     </content-elem>
@@ -253,6 +263,19 @@ const formLevel = ref({
     errors: {}
 });
 
+const formRoles = ref({
+    valid: false,
+    submiting: false,
+    data: {
+        roles: null
+    },
+    errors: {}
+});
+
+const roles = ref({
+    list: []
+});
+
 /**
  *
  * Computeds
@@ -275,11 +298,27 @@ const method_getUser = () => {
         action: '/admin/users/' + id,
         method: 'get',
         success: (resp) => {
-            form.value.data = resp.data.user;
-            formLevel.value.data.level = resp.data.user.level;
+            const user = resp.data.user;
+
+            form.value.data = user;
+            formLevel.value.data.level = user.level;
+
+            formRoles.value.data.roles = user.roles.map((r) => {
+                return r.id;
+            });
         }
     });
 };
+
+const method_getRoles = () => {
+    return req({
+        action: '/admin/roles',
+        method: 'get',
+        success: (resp) => {
+            roles.value.list = resp.data.roles.list;
+        }
+    });
+}
 
 const method_submit = () => {
     if (!form.value.valid) {
@@ -327,6 +366,10 @@ const method_photoDelete = () => {
 };
 
 const method_updateLevel = () => {
+    if (!form.value.data?.id) {
+        return;
+    }
+
     formLevel.value.submiting = true;
     return req({
         action: '/admin/users/' + form.value.data.id + '/update-level',
@@ -366,6 +409,40 @@ const method_updateLevelConfirm = (newLevel, oldLevel) => {
     }
 }
 
+const method_updateRoles = (newRoles, oldRoles) => {
+    if (!form.value.data?.id) {
+        return;
+    }
+
+    const remove = oldRoles.filter((v) => newRoles.indexOf(v) === -1);
+    const add = newRoles.filter((v) => oldRoles.indexOf(v) === -1);
+    let action = null;
+    let method = null;
+
+    if (remove.length) {
+        action = '/admin/users/roles/' + form.value.data.id + '/' + remove[0];
+        method = 'delete';
+    } else if (add.length) {
+        action = '/admin/users/roles/' + form.value.data.id + '/' + add[0];
+        method = 'put';
+    }
+
+    formRoles.value.submiting = true;
+    return req({
+        action: action,
+        method: method,
+        success: () => {
+            appStore.addAlert().info('A função deste usuário foi atualizada com sucesso!', 'Função atualizada!');
+        },
+        fail: (resp) => {
+            formRoles.value.errors = resp.response.data.errors;
+        },
+        finally: () => {
+            formRoles.value.submiting = false;
+        }
+    });
+}
+
 const method_formReset = () => {
     form.value.valid = false;
     form.value.data = {
@@ -381,7 +458,12 @@ const method_formReset = () => {
     formLevel.value.valid = false;
     formLevel.value.data = {
         level: form.value.data.level ?? null
-    }
+    };
+
+    formRoles.value.valid = false;
+    formRoles.value.data = {
+        roles: []
+    };
 }
 
 /**
@@ -398,6 +480,14 @@ watch(() => formLevel.value.data.level, (nv, ov) => {
         method_updateLevelConfirm(nv, ov);
     }
 }, { deep: true });
+
+watch(() => formRoles.value.data.roles, (nv, ov) => {
+    if (ov === null) {
+        return;
+    }
+
+    method_updateRoles(nv, ov);
+});
 
 /**
  * 
