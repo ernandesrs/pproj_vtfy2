@@ -16,46 +16,37 @@
             <content-elem>
                 <template #content>
 
-                    <v-table hover>
-                        <thead>
-                            <tr>
-                                <td>Usuário</td>
-                                <td>E-mail</td>
-                                <td class="d-none d-md-table-cell">Acesso</td>
-                                <td class="py-4 text-right">Ações</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="item, index in data.users" :key="item">
-                                <td>
-                                    {{ item.first_name + ' ' + item.last_name }}
-                                </td>
-                                <td>
-                                    {{ item.email }}
-                                </td>
-                                <td class="d-none d-md-table-cell">
-                                    {{ {
-                                        0: 'Usuário', 8: 'Administrador', 9: 'Super usuário'
-                                    }[item.level] }}
-                                </td>
-                                <td class="py-4 text-right">
-                                    <v-btn-group variant="text">
-                                        <v-btn v-if="authStore.permission('user').canView()" icon="mdi-eye-outline"
-                                            color="info" size="small" />
-                                        <v-btn v-if="authStore.permission('user').canUpdate()" icon="mdi-pencil-box-outline"
-                                            color="primary" :to="{ name: 'admin.users.edit', params: { user_id: item.id } }"
-                                            size="small" />
-                                        <button-confirmation v-if="authStore.permission('user').canDelete()"
-                                            icon="mdi-trash-can-outline" color="danger"
-                                            :dialog-title="'Excluir ' + item.first_name + ' ' + item.last_name + '?'"
-                                            dialog-text="Ao confirmar a exclusão, os dados do usuário não poderão ser recuperados."
-                                            size="small" :confirm-callback="method_deleteUser" :data-id="item.id"
-                                            :data-index="index" />
-                                    </v-btn-group>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </v-table>
+                    <table-list :items="data.users" :theads="[
+                        {
+                            label: 'Usuário'
+                        },
+                        {
+                            label: 'E-mail'
+                        },
+                        {
+                            label: 'Acesso'
+                        }
+                    ]" v-slot="{ item, index }">
+
+                        <table-list-item :data-id="item.id" :data-index="index" :columns="[
+                            {
+                                value: item.first_name + ' ' + item.last_name
+                            },
+                            {
+                                value: item.email
+                            },
+                            {
+                                value: { 0: 'Comum', 8: 'Administrador', 9: 'Super usuário' }[item.level]
+                            }
+                        ]" :show-action="{ to: { name: 'admin.users.edit', params: { user_id: item.id } } }"
+                            :edit-action="{ to: { name: 'admin.users.edit', params: { user_id: item.id } } }"
+                            :delete-confirm-action="{
+                                callback: method_deleteUser,
+                                dialogTitle: 'Excluir ' + item.first_name + ' ' + item.last_name + '?',
+                                dialogText: 'Ao confirmar, a exclusão deste usuário não poderá mais ser desfeita.'
+                            }" />
+
+                    </table-list>
 
                 </template>
             </content-elem>
@@ -65,13 +56,14 @@
 
 <script setup>
 
-import ButtonConfirmation from '@/components/ButtonConfirmation.vue';
 import ContentElem from '@/components/ContentElem.vue';
 import { req } from '@/plugins/axios';
 import BaseView from '@/layouts/admin/BaseView';
 import { ref } from 'vue';
 import { useAuthStore } from '@/store/user/auth';
 import { useAppStore } from '@/store/app';
+import TableList from '@/components/list/TableList.vue';
+import TableListItem from '@/components/list/TableListItem.vue';
 
 /**
  * 
