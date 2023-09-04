@@ -116,12 +116,10 @@ const method_confirm = () => {
 
     data.value.waitingConfirmationCallback = true;
     try {
-        const data = {
+        props.confirmCallback({
             id: props.dataId,
             index: props.dataIndex
-        };
-
-        props.confirmCallback(data).finally(() => {
+        }).finally(() => {
             data.value.waitingConfirmation = false;
             data.value.waitingConfirmationCallback = false;
         });
