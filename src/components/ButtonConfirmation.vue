@@ -28,6 +28,14 @@
 import { ref } from 'vue';
 
 const props = defineProps({
+    dataId: {
+        type: [Number, String],
+        default: null
+    },
+    dataIndex: {
+        type: [Number, String],
+        default: null
+    },
     text: {
         type: [String, null],
         default: null
@@ -94,18 +102,23 @@ const method_cancel = () => {
 
 const method_confirm = () => {
     if (!props.confirmCallback) {
-        data.value.waitingConfirmation = !data.value.waitingConfirmation;
+        data.value.waitingConfirmation = false;
         return;
     }
 
     data.value.waitingConfirmationCallback = true;
     try {
-        props.confirmCallback().finally(() => {
-            data.value.waitingConfirmation = !data.value.waitingConfirmation;
+        const data = {
+            id: props.dataId,
+            index: props.dataIndex
+        };
+
+        props.confirmCallback(data).finally(() => {
+            data.value.waitingConfirmation = false;
             data.value.waitingConfirmationCallback = false;
         });
     } catch {
-        data.value.waitingConfirmation = !data.value.waitingConfirmation;
+        data.value.waitingConfirmation = false;
         data.value.waitingConfirmationCallback = false;
     }
 };

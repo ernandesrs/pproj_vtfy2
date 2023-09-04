@@ -26,7 +26,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in data.users" :key="item">
+                            <tr v-for="item, index in data.users" :key="item">
                                 <td>
                                     {{ item.first_name + ' ' + item.last_name }}
                                 </td>
@@ -49,7 +49,8 @@
                                             icon="mdi-trash-can-outline" color="danger"
                                             :dialog-title="'Excluir ' + item.first_name + ' ' + item.last_name + '?'"
                                             dialog-text="Ao confirmar a exclusão, os dados do usuário não poderão ser recuperados."
-                                            size="small" />
+                                            size="small" :confirm-callback="method_deleteUser" :data-id="item.id"
+                                            :data-index="index" />
                                     </v-btn-group>
                                 </td>
                             </tr>
@@ -70,6 +71,7 @@ import { req } from '@/plugins/axios';
 import BaseView from '@/layouts/admin/BaseView';
 import { ref } from 'vue';
 import { useAuthStore } from '@/store/user/auth';
+import { useAppStore } from '@/store/app';
 
 /**
  * 
@@ -77,6 +79,8 @@ import { useAuthStore } from '@/store/user/auth';
  * 
  */
 const authStore = useAuthStore();
+
+const appStore = useAppStore();
 
 const data = ref({
     users: []
@@ -93,6 +97,17 @@ const method_getUsers = () => {
         method: 'get',
         success: (resp) => {
             data.value.users = resp.data.users.list
+        }
+    });
+}
+
+const method_deleteUser = (d) => {
+    return req({
+        action: '/admin/users/' + d.id,
+        method: 'delete',
+        success: () => {
+            appStore.addAlert().danger('O usuário foi excluído definitivamente.', 'Excluído!');
+            data.value.users.splice(d.index, 1);
         }
     });
 }
