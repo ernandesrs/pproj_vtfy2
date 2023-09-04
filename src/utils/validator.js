@@ -1,6 +1,7 @@
 // const emailReg = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
 const emailReg = new RegExp('[a-z0-9]+@[a-z]+\\.[a-z]{2,3}');
 const genders = ['m', 'n', 'f'];
+const minPassword = 5;
 
 export default {
     required: value => {
@@ -19,7 +20,7 @@ export default {
         return value.length > 1 ? true : 'Mínimo 2 caracteres'
     },
     password: value => {
-        return value.length >= 5 ? true : 'Mínimo 6 caracteres'
+        return value.length >= minPassword ? true : 'Mínimo ' + minPassword + ' caracteres'
     },
     images: value => {
         const mimes = [

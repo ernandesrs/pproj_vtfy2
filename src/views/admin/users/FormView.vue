@@ -126,6 +126,19 @@
                             </div>
                         </template>
                     </content-elem>
+                    <content-elem v-if="authStore.isSuperuser" title="Nível e funções" class="mb-6">
+                        <template #content>
+                            <v-form v-model="formLevel.valid">
+                                <v-select label="Nível de acesso" v-model="formLevel.data.level" :items="Object.entries(ALLOWED_LEVELS).map((l) => {
+                                    return {
+                                        title: l[1].text,
+                                        value: l[1].value
+                                    }
+                                })" :rules="[]" :error-messages="formLevel.errors?.level"
+                                    :loading="formLevel.submiting" :disabled="formLevel.submiting" />
+                            </v-form>
+                        </template>
+                    </content-elem>
 
                     <content-elem title="Detalhes da conta">
                         <template #content>
@@ -159,6 +172,7 @@ import { req } from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
 import { useAuthStore } from '@/store/user/auth';
 import validator from '@/utils/validator';
+import { watch } from 'vue';
 import { ref, computed, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -220,6 +234,15 @@ const form = ref({
     errors: {}
 });
 
+const formLevel = ref({
+    valid: false,
+    submiting: false,
+    data: {
+        level: null
+    },
+    errors: {}
+});
+
 /**
  *
  * Computeds
@@ -243,6 +266,7 @@ const method_getUser = () => {
         method: 'get',
         success: (resp) => {
             form.value.data = resp.data.user;
+            formLevel.value.data.level = resp.data.user.level;
         }
     });
 };
@@ -292,6 +316,28 @@ const method_photoDelete = () => {
     });
 };
 
+const method_updateLevel = () => {
+    formLevel.value.submiting = true;
+    return req({
+        action: '/admin/users/' + form.value.data.id + '/update-level',
+        method: 'put',
+        data: {
+            level: formLevel.value.data.level
+        },
+        success: () => {
+            form.value.data.level = formLevel.value.data.level;
+            appStore.addAlert().info('O nível de acesso do usuário foi atualizado com sucesso!', 'Nível atualizado!');
+        },
+        fail: (resp) => {
+            form.value.errors = resp.response.data.errors;
+        },
+        finally: () => {
+            formLevel.value.submiting = false;
+            formLevel.value.valid = false;
+        }
+    });
+}
+
 const method_formReset = () => {
     form.value.valid = false;
     form.value.data = {
@@ -303,11 +349,31 @@ const method_formReset = () => {
         password: null,
         password_confirmation: null
     };
+
+    formLevel.value.valid = false;
+    formLevel.value.data = {
+        level: form.value.data.level ?? null
+    }
 }
 
 /**
  * 
  * Watchers
+ * 
+ */
+watch(() => formLevel.value.data.level, (nv, ov) => {
+    if (ov === null) {
+        return;
+    }
+
+    if (nv !== ov) {
+        method_updateLevel();
+    }
+}, { deep: true });
+
+/**
+ * 
+ * On updated
  * 
  */
 

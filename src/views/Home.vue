@@ -61,10 +61,6 @@ const computed_authStore = computed(() => {
  * Created
  * 
  */
-useAppStore().setBreadcrumbs([
-	{
-		text: 'Bem vindo'
-	}
-]);
+document.title = '[' + computed_appStore.value.getName + (computed_appStore.value.getSubname ? ' ' + computed_appStore.value.getSubname : '') + '] Bem vindo(a)';
 
 </script>
