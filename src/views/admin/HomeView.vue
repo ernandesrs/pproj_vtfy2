@@ -11,7 +11,7 @@
                         <v-col cols="12" sm="5" md="4">
                             <card-elem color="primary" icon="mdi-account-group-outline" title="Usuários"
                                 :value="data.cards.users.total" :action="{
-                                    to: { name: 'admin.home' },
+                                    to: { name: 'admin.users' },
                                     text: 'Ir para usuários'
                                 }" />
                         </v-col>
