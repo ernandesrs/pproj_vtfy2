@@ -338,6 +338,18 @@ const method_updateLevel = () => {
     });
 }
 
+const method_updateLevelConfirm = (newLevel, oldLevel) => {
+    if (newLevel === 9) {
+        if (window.confirm('Tem certeza?')) {
+            method_updateLevel();
+        } else {
+            formLevel.value.data.level = oldLevel;
+        }
+    } else {
+        method_updateLevel();
+    }
+}
+
 const method_formReset = () => {
     form.value.valid = false;
     form.value.data = {
@@ -366,8 +378,8 @@ watch(() => formLevel.value.data.level, (nv, ov) => {
         return;
     }
 
-    if (nv !== ov) {
-        method_updateLevel();
+    if (nv !== ov && nv !== form.value.data.level) {
+        method_updateLevelConfirm(nv, ov);
     }
 }, { deep: true });
 
