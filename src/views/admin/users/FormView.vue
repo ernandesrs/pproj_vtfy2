@@ -127,7 +127,14 @@
                         </template>
                     </content-elem>
                     <content-elem v-if="authStore.isSuperuser" title="Nível e funções" class="mb-6">
+
                         <template #content>
+
+                            <confirmation-dialog v-model="formLevel.showConfirmationDialog"
+                                :confirm-callback="method_updateLevelConfirmed"
+                                :cancel-callback="method_updateLevelCanceled" color="warning" title="Atenção!"
+                                text="Você está promovendo este usuário a super usuário, isso o concede poder total sobre o sistema, incluindo e não limitando-se a editar e excluir outros super usuários." />
+
                             <v-form v-model="formLevel.valid">
                                 <v-select label="Nível de acesso" v-model="formLevel.data.level" :items="Object.entries(ALLOWED_LEVELS).map((l) => {
                                     return {
@@ -164,6 +171,7 @@
 <script setup>
 
 import ButtonConfirmation from '@/components/ButtonConfirmation.vue';
+import ConfirmationDialog from '@/components/ConfirmationDialog.vue';
 import ContentElem from '@/components/ContentElem.vue';
 import DetailGroup from '@/components/DetailGroup.vue';
 import UserAvatar from '@/components/UserAvatar.vue';
@@ -234,7 +242,9 @@ const form = ref({
     errors: {}
 });
 
+const userOldLevel = ref(null);
 const formLevel = ref({
+    showConfirmationDialog: false,
     valid: false,
     submiting: false,
     data: {
@@ -336,15 +346,21 @@ const method_updateLevel = () => {
             formLevel.value.valid = false;
         }
     });
+};
+
+const method_updateLevelConfirmed = () => {
+    method_updateLevel();
+};
+
+const method_updateLevelCanceled = () => {
+    formLevel.value.data.level = userOldLevel.value;
+    userOldLevel.value = null;
 }
 
 const method_updateLevelConfirm = (newLevel, oldLevel) => {
     if (newLevel === 9) {
-        if (window.confirm('Tem certeza?')) {
-            method_updateLevel();
-        } else {
-            formLevel.value.data.level = oldLevel;
-        }
+        userOldLevel.value = oldLevel;
+        formLevel.value.showConfirmationDialog = true;
     } else {
         method_updateLevel();
     }
