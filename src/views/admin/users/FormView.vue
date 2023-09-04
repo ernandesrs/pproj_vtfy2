@@ -155,7 +155,7 @@ import { req } from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
 import validator from '@/utils/validator';
 import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 /**
  * 
@@ -195,6 +195,8 @@ const ALLOWED_LEVELS = {
 const appStore = useAppStore();
 
 const route = useRoute();
+
+const router = useRouter();
 
 const form = ref({
     valid: false,
@@ -239,7 +241,37 @@ const method_getUser = () => {
 };
 
 const method_submit = () => {
-    // 
+    if (!form.value.valid) {
+        appStore.addAlert().missingData();
+        return;
+    }
+
+    let data = form.value.data;
+    if (!data.password?.length) {
+        delete data.password;
+        delete data.password_confirmation;
+    }
+
+    form.value.submiting = true;
+    req({
+        action: computed_isCreating.value ? '/admin/users' : '/admin/users/' + data.id,
+        method: computed_isCreating.value ? 'post' : 'put',
+        data: data,
+        success: () => {
+            if (computed_isCreating.value) {
+                appStore.addAlert().success('Novo usuário foi registrado com sucesso!', 'Registrado!', true);
+                router.push({ name: 'admin.users' });
+            } else {
+                appStore.addAlert().info('Os dados do usuário foram atualizados com sucesso!', 'Atualizado!');
+            }
+        },
+        fail: (resp) => {
+            form.value.errors = resp.response.data.errors;
+        },
+        finally: () => {
+            form.value.submiting = false;
+        }
+    });
 };
 
 const method_photoDelete = () => {
