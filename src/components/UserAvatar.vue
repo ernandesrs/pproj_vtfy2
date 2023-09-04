@@ -4,7 +4,7 @@
             <v-img :src="photo_url" cover />
         </template>
         <template v-else>
-            <span class="text-h2 font-weight-medium">{{ props.username[0].toUpperCase() }}</span>
+            <span class="text-h2 font-weight-medium">{{ (props.username ? props.username[0] : 'U').toUpperCase() }}</span>
         </template>
     </div>
 </template>

@@ -115,7 +115,7 @@
                     <content-elem title="Foto" class="mb-6">
                         <template #content>
                             <div class="d-flex justify-center mb-5">
-                                <user-avatar :username="form.data.first_name" :photo_url="form.data?.photo_url" />
+                                <user-avatar :username="form.data?.first_name" :photo_url="form.data?.photo_url" />
                             </div>
                             <div class="d-flex justify-center">
                                 <button-confirmation v-if="form.data?.photo_url" text="Excluir foto"
@@ -138,7 +138,7 @@
                                     Date(form.data.created_at)).toLocaleString('br') : 'Não verificado'" />
 
                             <detail-group tooltip="Nível de acesso do usuário" icon="mdi-license" title="Nível de acesso"
-                                :text="ALLOWED_LEVELS[form.data?.level].text" />
+                                :text="form.data?.level === undefined ? 'Não definido' : ALLOWED_LEVELS[form.data?.level].text" />
                         </template>
                     </content-elem>
                 </v-col>
@@ -159,7 +159,7 @@ import { req } from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
 import { useAuthStore } from '@/store/user/auth';
 import validator from '@/utils/validator';
-import { ref, computed } from 'vue';
+import { ref, computed, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 /**
@@ -264,10 +264,10 @@ const method_submit = () => {
         action: computed_isCreating.value ? '/admin/users' : '/admin/users/' + data.id,
         method: computed_isCreating.value ? 'post' : 'put',
         data: data,
-        success: () => {
+        success: (resp) => {
             if (computed_isCreating.value) {
                 appStore.addAlert().success('Novo usuário foi registrado com sucesso!', 'Registrado!', true);
-                router.push({ name: 'admin.users' });
+                router.push({ name: 'admin.users.edit', params: { user_id: resp.data.user.id } });
             } else {
                 appStore.addAlert().info('Os dados do usuário foram atualizados com sucesso!', 'Atualizado!');
             }
@@ -290,6 +290,19 @@ const method_photoDelete = () => {
             form.value.data.photo_url = null;
         }
     });
+};
+
+const method_formReset = () => {
+    form.value.valid = false;
+    form.value.data = {
+        first_name: null,
+        last_name: null,
+        username: null,
+        gender: null,
+        email: null,
+        password: null,
+        password_confirmation: null
+    };
 }
 
 /**
@@ -297,5 +310,9 @@ const method_photoDelete = () => {
  * Watchers
  * 
  */
+
+onUpdated(() => {
+    method_formReset();
+});
 
 </script>
