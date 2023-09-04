@@ -92,18 +92,18 @@ const data = ref({
  */
 const method_cancel = () => {
     if (!props.cancelCallback) {
-        data.value.waitingConfirmation = !data.value.waitingConfirmation
+        data.value.waitingConfirmation = false
         return;
     }
 
     data.value.waitingCancelCallback = true;
     try {
         props.cancelCallback().finally(() => {
-            data.value.waitingConfirmation = !data.value.waitingConfirmation;
+            data.value.waitingConfirmation = false;
             data.value.waitingCancelCallback = false;
         });
     } catch {
-        data.value.waitingConfirmation = !data.value.waitingConfirmation;
+        data.value.waitingConfirmation = false;
         data.value.waitingCancelCallback = false;
     }
 };

@@ -131,7 +131,7 @@
                     <content-elem v-if="authStore.isSuperuser && authStore.getUser.id != form.data.id"
                         title="Nível e funções" class="mb-6">
                         <template #content>
-                            <confirmation-dialog v-model="formLevel.showConfirmationDialog"
+                            <dialog-confirmation v-model="formLevel.showConfirmationDialog"
                                 :confirm-callback="method_updateLevelConfirmed"
                                 :cancel-callback="method_updateLevelCanceled" color="warning" title="Atenção!"
                                 text="Você está promovendo este usuário a super usuário, isso o concede poder total sobre o sistema, incluindo e não limitando-se a editar e excluir outros super usuários." />
@@ -181,7 +181,7 @@
 <script setup>
 
 import ButtonConfirmation from '@/components/ButtonConfirmation.vue';
-import ConfirmationDialog from '@/components/ConfirmationDialog.vue';
+import DialogConfirmation from '@/components/DialogConfirmation.vue';
 import ContentElem from '@/components/ContentElem.vue';
 import DetailGroup from '@/components/DetailGroup.vue';
 import UserAvatar from '@/components/UserAvatar.vue';
