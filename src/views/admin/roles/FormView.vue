@@ -1,16 +1,18 @@
 <template>
-    <base-view :page-title="computed_isCreating ? 'Nova função' : 'Editar função'" :page-breadcrumbs="[
-        {
-            text: 'Funções',
-            to: { name: 'admin.roles' },
-            disabled: false
-        },
-        {
-            text: computed_isCreating ? 'Nova' : 'Editar',
-            to: computed_isCreating ? { name: 'admin.roles.create' } : { name: 'admin.roles.edit', params: { role_id: route.params.role_id } },
-            disabled: true
-        }
-    ]" :requests="computed_isCreating ? [] : [
+    <base-view
+        :page-title="computed_isCreating ? 'Nova função' : computed_showMode ? 'Detalhes da função' : 'Editar função'"
+        :page-breadcrumbs="[
+            {
+                text: 'Funções',
+                to: { name: 'admin.roles' },
+                disabled: false
+            },
+            {
+                text: computed_isCreating ? 'Nova' : computed_showMode ? 'Detalhes' : 'Editar',
+                to: computed_isCreating ? { name: 'admin.roles.create' } : { name: computed_showMode ? 'admin.roles.show' : 'admin.roles.edit', params: { role_id: route.params.role_id } },
+                disabled: true
+            }
+        ]" :requests="computed_isCreating ? [] : [
     method_getRole
 ]" :create-action="{
     text: 'Nova função',
@@ -39,14 +41,18 @@
                                                 v-for="permissibleActions, permissibleIndex in form.data.permissibles"
                                                 :key="permissibleIndex" :label="permissibleIndex">
                                                 <v-expansion-panel-title>
-                                                    Permitir/negar ações sobre {{ permissibleIndex }}
+                                                    {{ (computed_showMode ? 'Ver ações permitidas/negadas sobre ' :
+                                                        'Permitir/negar ações sobre ') +
+                                                        permissibleIndex
+                                                    }}
                                                 </v-expansion-panel-title>
                                                 <v-expansion-panel-text>
                                                     <div class="d-flex flex-wrap justify-center">
                                                         <v-switch v-for="action, actionIndex in permissibleActions"
                                                             :key="actionIndex"
                                                             v-model="form.data.permissibles[permissibleIndex][actionIndex]"
-                                                            :label="actionIndex" class="mx-1" />
+                                                            :label="actionIndex" class="mx-1"
+                                                            :disabled="computed_showMode" />
                                                     </div>
                                                 </v-expansion-panel-text>
                                             </v-expansion-panel>

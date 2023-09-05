@@ -27,6 +27,7 @@
                                 value: item.display_name
                             }
                         ]"
+                            :show-action="{ show: authStore.permission('role').canView(), to: { name: 'admin.roles.show', params: { role_id: item.id } } }"
                             :edit-action="{ show: authStore.permission('role').canUpdate(), to: { name: 'admin.roles.edit', params: { role_id: item.id } } }"
                             :delete-confirm-action="{
                                 show: authStore.permission('role').canDelete(),

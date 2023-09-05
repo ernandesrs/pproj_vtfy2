@@ -100,6 +100,14 @@ const routes = [
         component: () => import('@/views/admin/roles/ListView.vue'),
       },
       {
+        path: 'funcoes/:role_id/mostrar',
+        name: 'admin.roles.show',
+        beforeEnter: [
+          middlewares.authorization.showAccess
+        ],
+        component: () => import('@/views/admin/roles/FormView.vue')
+      },
+      {
         path: 'funcoes/criar',
         name: 'admin.roles.create',
         beforeEnter: [
