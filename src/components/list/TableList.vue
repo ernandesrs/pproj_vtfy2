@@ -3,7 +3,7 @@
         <v-progress-circular indeterminate color="primary" size="45" />
     </div>
 
-    <v-form class="mb-4 py-3">
+    <v-form v-if="props.filterCallback" class="mb-4 py-3">
         <v-row justify="space-between">
             <v-col cols="12" sm="6" md="4" lg="2" xl="1">
             </v-col>
@@ -26,6 +26,11 @@
             <template v-for="item, itemIndex in props.items" :key="itemIndex">
                 <slot :index="itemIndex" :item="item" />
             </template>
+            <tr v-if="!reloadingList && items.length == 0">
+                <td class="text-center py-6 text-h6 font-weight-regular text-grey-lighten-1" :colspan="theads.length + 1">
+                    {{ formFilter.search ? 'Sem resultado para o filtro' : 'Nada para listar' }}
+                </td>
+            </tr>
         </tbody>
     </v-table>
 
@@ -55,10 +60,6 @@ const props = defineProps({
     pages: {
         type: [Array, null],
         default: new Array
-    },
-    resource: {
-        type: [String, null],
-        default: null
     },
     changePageCallback: {
         type: Function,
