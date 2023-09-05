@@ -16,17 +16,18 @@
             <content-elem>
                 <template #content>
 
-                    <table-list :items="data.users" :pages="data.pages" :change-page-callback="method_getUsers" :theads="[
-                        {
-                            label: 'Usuário'
-                        },
-                        {
-                            label: 'E-mail'
-                        },
-                        {
-                            label: 'Acesso'
-                        }
-                    ]" v-slot="{ item, index }">
+                    <table-list resource="user" :items="data.users" :pages="data.pages"
+                        :change-page-callback="method_getUsers" :theads="[
+                            {
+                                label: 'Usuário'
+                            },
+                            {
+                                label: 'E-mail'
+                            },
+                            {
+                                label: 'Acesso'
+                            }
+                        ]" v-slot="{ item, index }">
 
                         <table-list-item :data-id="item.id" :data-index="index" :columns="[
                             {
@@ -38,9 +39,11 @@
                             {
                                 value: { 0: 'Comum', 8: 'Administrador', 9: 'Super usuário' }[item.level]
                             }
-                        ]" :show-action="{ to: { name: 'admin.users.edit', params: { user_id: item.id } } }"
-                            :edit-action="{ to: { name: 'admin.users.edit', params: { user_id: item.id } } }"
+                        ]"
+                            :show-action="{ show: authStore.permission('user').canView(), to: { name: 'admin.users.edit', params: { user_id: item.id } } }"
+                            :edit-action="{ show: authStore.permission('user').canUpdate(), to: { name: 'admin.users.edit', params: { user_id: item.id } } }"
                             :delete-confirm-action="{
+                                show: authStore.permission('user').canDelete(),
                                 callback: method_deleteUser,
                                 dialogTitle: 'Excluir ' + item.first_name + ' ' + item.last_name + '?',
                                 dialogText: 'Ao confirmar, a exclusão deste usuário não poderá mais ser desfeita.'

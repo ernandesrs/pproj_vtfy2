@@ -7,13 +7,13 @@
         <!-- actions -->
         <td class="py-4 text-right">
             <v-btn-group variant="text">
-                <v-btn v-if="computed_hasShow && authStore.permission(props.resource).canView()" @click.stop="method_show"
-                    icon="mdi-eye-outline" color="info" size="small" />
+                <v-btn v-if="computed_hasShow && props.showAction?.show" @click.stop="method_show" icon="mdi-eye-outline"
+                    color="info" size="small" />
 
-                <v-btn v-if="computed_hasEdit && authStore.permission(props.resource).canUpdate()" @click.stop="method_edit"
+                <v-btn v-if="computed_hasEdit && props.editAction?.show" @click.stop="method_edit"
                     icon="mdi-pencil-box-outline" color="primary" size="small" />
 
-                <button-confirmation v-if="computed_hasDelete && authStore.permission(props.resource).canDelete()"
+                <button-confirmation v-if="computed_hasDelete && props.deleteConfirmAction?.show"
                     icon="mdi-trash-can-outline" color="danger" :dialog-title="props.deleteConfirmAction?.dialogTitle"
                     :dialog-text="props.deleteConfirmAction?.dialogText" size="small"
                     :confirm-callback="method_deleteConfirmed" :cancel-callback="method_deleteCanceled"
@@ -26,7 +26,6 @@
 
 <script setup>
 
-import { useAuthStore } from '@/store/user/auth';
 import ButtonConfirmation from '../ButtonConfirmation.vue';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
@@ -52,6 +51,7 @@ const props = defineProps({
     showAction: {
         type: [Object, null],
         default: Object.create({
+            show: false,
             to: null,
             callback: null
         })
@@ -59,6 +59,7 @@ const props = defineProps({
     editAction: {
         type: [Object, null],
         default: Object.create({
+            show: false,
             to: null,
             callback: null
         })
@@ -66,6 +67,7 @@ const props = defineProps({
     deleteConfirmAction: {
         type: [Object, null],
         default: Object.create({
+            show: false,
             to: null,
             callback: null,
             dialogTitle: 'Tem certeza?',
@@ -86,8 +88,6 @@ const props = defineProps({
  * Consts, Vars, Refs and Reactives
  * 
  */
-
-const authStore = useAuthStore();
 
 const router = useRouter();
 
