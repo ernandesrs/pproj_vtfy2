@@ -38,6 +38,9 @@ export const add = {
     },
     missingData: (flash = false) => {
         return setAlert('Preencha todos os campos do formulário', 'Faltam dados obrigatórios', 'danger', flash);
+    },
+    denyAcess: (flash = false) => {
+        return setAlert('O acesso solicitado foi negado pois você não possui essa autorização.', 'Acesso negado', 'danger', flash);
     }
 };
 

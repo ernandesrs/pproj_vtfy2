@@ -62,21 +62,33 @@ const routes = [
       {
         path: 'usuarios',
         name: 'admin.users',
+        beforeEnter: [
+          middlewares.authorization.listAccess
+        ],
         component: () => import('@/views/admin/users/ListView.vue')
       },
       {
         path: 'usuarios/:user_id/mostrar',
         name: 'admin.users.show',
+        beforeEnter: [
+          middlewares.authorization.showAccess
+        ],
         component: () => import('@/views/admin/users/FormView.vue')
       },
       {
         path: 'usuarios/criar',
         name: 'admin.users.create',
+        beforeEnter: [
+          middlewares.authorization.createAccess
+        ],
         component: () => import('@/views/admin/users/FormView.vue')
       },
       {
         path: 'usuarios/:user_id/editar',
         name: 'admin.users.edit',
+        beforeEnter: [
+          middlewares.authorization.updateAccess
+        ],
         component: () => import('@/views/admin/users/FormView.vue')
       }
     ]

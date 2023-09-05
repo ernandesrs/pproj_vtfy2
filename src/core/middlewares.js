@@ -61,6 +61,62 @@ const authorizer = {
         }
 
         next(route);
+    },
+    listAccess: (to, from, next) => {
+        let route = null;
+
+        if (!useAuthStore().permission(to.name).canViewAny()) {
+            useAppStore()
+                .addAlert()
+                .denyAcess(from.name ? false : true);
+            route = {
+                name: 'admin.home'
+            };
+        }
+
+        return next(route);
+    },
+    showAccess: (to, from, next) => {
+        let route = null;
+
+        if (!useAuthStore().permission(to.name).canView()) {
+            useAppStore()
+                .addAlert()
+                .denyAcess(from.name ? false : true);
+            route = {
+                name: 'admin.home'
+            };
+        }
+
+        return next(route);
+    },
+    createAccess: (to, from, next) => {
+        let route = null;
+
+        if (!useAuthStore().permission(to.name).canCreate()) {
+            useAppStore()
+                .addAlert()
+                .denyAcess(from.name ? false : true);
+            route = {
+                name: 'admin.home'
+            };
+        }
+
+        return next(route);
+    },
+    updateAccess: (to, from, next) => {
+        let route = null;
+
+        if (!useAuthStore().permission(to.name).canUpdate()) {
+            useAppStore()
+                .addAlert()
+                .denyAcess(from.name ? false : true);
+            route = {
+                name: 'admin.home'
+            };
+        }
+
+        return next(route);
     }
 };
 
