@@ -16,7 +16,7 @@
             <content-elem>
                 <template #content>
 
-                    <table-list :items="data.users" :theads="[
+                    <table-list :items="data.users" :pages="data.pages" :change-page-callback="method_getUsers" :theads="[
                         {
                             label: 'Usuário'
                         },
@@ -75,7 +75,8 @@ const authStore = useAuthStore();
 const appStore = useAppStore();
 
 const data = ref({
-    users: []
+    users: [],
+    pages: []
 });
 
 /**
@@ -83,15 +84,16 @@ const data = ref({
  * Methohds
  * 
  */
-const method_getUsers = () => {
+const method_getUsers = (page = 1) => {
     return req({
-        action: '/admin/users',
+        action: '/admin/users?page=' + page,
         method: 'get',
         success: (resp) => {
-            data.value.users = resp.data.users.list
+            data.value.users = resp.data.users.list;
+            data.value.pages = resp.data.users.meta.links;
         }
     });
-}
+};
 
 const method_deleteUser = (d) => {
     return req({
@@ -102,6 +104,6 @@ const method_deleteUser = (d) => {
             data.value.users.splice(d.index, 1);
         }
     });
-}
+};
 
 </script>
