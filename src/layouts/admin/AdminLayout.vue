@@ -107,6 +107,12 @@ const navItems = [
         icon: 'mdi-cog',
         activeIn: [],
         items: [
+            {
+                text: 'Funções',
+                to: { name: 'admin.roles' },
+                icon: 'mdi-medal',
+                activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.show', 'admin.roles.edit']
+            },
         ]
     },
 ];

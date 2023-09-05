@@ -90,6 +90,14 @@ const routes = [
           middlewares.authorization.updateAccess
         ],
         component: () => import('@/views/admin/users/FormView.vue')
+      },
+      {
+        path: 'funcoes',
+        name: 'admin.roles',
+        beforeEnter: [
+          middlewares.authorization.listAccess
+        ],
+        component: () => import('@/views/admin/roles/ListView.vue')
       }
     ]
   }

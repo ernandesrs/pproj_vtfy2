@@ -16,7 +16,7 @@
             <content-elem>
                 <template #content>
 
-                    <table-list resource="user" :items="data.users" :pages="data.pages"
+                    <table-list :items="data.users" :pages="data.pages"
                         :change-page-callback="method_getUsers" :filter-callback="method_filterUsers" :theads="[
                             {
                                 label: 'Usuário'
