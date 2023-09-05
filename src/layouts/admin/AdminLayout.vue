@@ -53,6 +53,31 @@
         <!-- appbar -->
         <v-app-bar density="compact" elevation="0" class="border-b">
             <v-app-bar-nav-icon variant="text" @click.stop="showNavigation = !showNavigation" />
+
+            <template #append>
+                <v-btn-group variant="text">
+                    <v-btn icon="mdi-bell-outline" size="small" :ripple="false" />
+                    <v-btn @click="method_toggleTheme" icon="mdi-brightness-6" size="small" :ripple="false" />
+                    <v-btn icon="mdi-account-circle-outline" id="profile-activator" />
+                </v-btn-group>
+
+                <v-menu activator="#profile-activator" width="220px">
+                    <v-list>
+                        <v-list-item class="py-4 px-6">
+                            <div class="d-flex flex-column align-center">
+                                <user-avatar :username="authStore.getFullName" :photo_url="authStore.getPhotoUrl"
+                                    :size=125 />
+                                <p class="mt-2 mb-5 text-h6 text-grey-darken-2">{{ authStore.getFullName }}</p>
+                                <div class="d-flex justify-space-between align-center w-100">
+                                    <v-btn :to="{ name: 'admin.profile' }" prepend-icon="mdi-account-circle" text="Perfil" color="primary" size="small"
+                                        variant="outlined" :disabled="route.name === 'admin.profile'" />
+                                    <v-btn @click.stop="authStore.logout" prepend-icon="mdi-logout" text="Sair" color="danger" size="small" variant="plain" />
+                                </div>
+                            </div>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </template>
         </v-app-bar>
         <!-- /appbar -->
 
@@ -69,6 +94,8 @@ import { ref } from 'vue';
 import { useAppStore } from '@/store/app';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/store/user/auth';
+import { useTheme } from 'vuetify';
+import UserAvatar from '@/components/UserAvatar.vue';
 
 /**
  * 
@@ -81,6 +108,8 @@ import { useAuthStore } from '@/store/user/auth';
  * Vars, Refs ands Reactives
  * 
  */
+const theme = useTheme();
+
 const appStore = useAppStore();
 
 const authStore = useAuthStore();
@@ -137,6 +166,10 @@ const endNavItems = [
 /**
  * Methods
  */
+const method_toggleTheme = () => {
+    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'cDark'
+};
+
 const method_navigationStatus = () => {
     if (window.innerWidth <= 1280) {
         showNavigation.value = false;

@@ -51,6 +51,21 @@ export default createVuetify({
           // custom
           'navigation-bg': colors.grey.darken4
         },
+      },
+      cDark: {
+        dark: true,
+        colors: {
+          primary: colors.lightBlue.darken2,
+          secondary: colors.deepPurple.darken2,
+
+          success: colors.teal.lighten1,
+          info: colors.cyan.darken1,
+          warning: colors.lime.darken3,
+          danger: colors.red.lighten1,
+
+          // custom
+          'navigation-bg': colors.shades.black
+        },
       }
     },
   },
