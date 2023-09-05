@@ -34,7 +34,23 @@
 
                                     <v-col v-if="!computed_isCreating">
 
-                                        
+                                        <v-expansion-panels variant="default">
+                                            <v-expansion-panel
+                                                v-for="permissibleActions, permissibleIndex in form.data.permissibles"
+                                                :key="permissibleIndex" :label="permissibleIndex">
+                                                <v-expansion-panel-title>
+                                                    Permitir/negar ações sobre {{ permissibleIndex }}
+                                                </v-expansion-panel-title>
+                                                <v-expansion-panel-text>
+                                                    <div class="d-flex flex-wrap justify-center">
+                                                        <v-switch v-for="action, actionIndex in permissibleActions"
+                                                            :key="actionIndex"
+                                                            v-model="form.data.permissibles[permissibleIndex][actionIndex]"
+                                                            :label="actionIndex" class="mx-1" />
+                                                    </div>
+                                                </v-expansion-panel-text>
+                                            </v-expansion-panel>
+                                        </v-expansion-panels>
 
                                     </v-col>
 
@@ -117,7 +133,8 @@ const method_submit = () => {
         action: '/admin/roles' + (computed_isCreating.value ? '' : '/' + data.id),
         method: computed_isCreating.value ? 'post' : 'put',
         data: {
-            display_name: data.display_name
+            display_name: data.display_name,
+            permissibles: data.permissibles
         },
         success: (resp) => {
             if (computed_isCreating.value) {
