@@ -1,18 +1,18 @@
 <template>
-    <v-container v-if="!['admin.home'].includes(route.name)" class="mt-2 mt-md-3 d-flex align-center justify-space-between">
-        <div class="d-flex flex-column flex-md-row align-start align-md-center">
-            <h1 class="text-h6 text-md-h5 mr-2">{{ props.pageTitle }}</h1>
+    <v-container v-if="!['admin.home'].includes(route.name)" class="mt-2 mt-md-3 d-flex justify-space-between">
+        <div class="d-flex flex-column">
+            <h1 class="text-h6 text-md-h5">{{ props.pageTitle }}</h1>
             <v-breadcrumbs density="compact"
                 :items="data.breadcrumbs.map(b => { return { title: b.text, to: b.to, disabled: b.disabled } })"
-                class="px-0 px-md-4" />
+                class="px-0" />
         </div>
 
         <!-- actions -->
         <div>
             <v-btn-group density="compact">
-                <v-btn v-if="props.createAction?.show && props.createAction?.to || props.createAction?.callback" @click.stop="method_createAction"
-                    :color="props.createAction?.color ?? 'success'" :prepend-icon="props.createAction?.icon ?? 'mdi-plus'"
-                    :text="props.createAction?.text ?? 'Novo'" />
+                <v-btn v-if="props.createAction?.show && props.createAction?.to || props.createAction?.callback"
+                    @click.stop="method_createAction" :color="props.createAction?.color ?? 'success'"
+                    :prepend-icon="props.createAction?.icon ?? 'mdi-plus'" :text="props.createAction?.text ?? 'Novo'" />
             </v-btn-group>
         </div>
     </v-container>
