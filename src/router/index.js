@@ -97,7 +97,23 @@ const routes = [
         beforeEnter: [
           middlewares.authorization.listAccess
         ],
-        component: () => import('@/views/admin/roles/ListView.vue')
+        component: () => import('@/views/admin/roles/ListView.vue'),
+      },
+      {
+        path: 'funcoes/criar',
+        name: 'admin.roles.create',
+        beforeEnter: [
+          middlewares.authorization.createAccess
+        ],
+        component: () => import('@/views/admin/roles/FormView.vue')
+      },
+      {
+        path: 'funcoes/:role_id/editar',
+        name: 'admin.roles.edit',
+        beforeEnter: [
+          middlewares.authorization.updateAccess
+        ],
+        component: () => import('@/views/admin/roles/FormView.vue')
       }
     ]
   }

@@ -7,7 +7,11 @@
             },
             disabled: true
         }
-    ]" :requests="[method_getRoles]">
+    ]" :requests="[method_getRoles]" :create-action="{
+    text: 'Nova função',
+    to: { name: 'admin.roles.create' },
+    show: authStore.permission('role').canCreate()
+}">
         <template #content>
 
             <content-elem>
@@ -23,7 +27,7 @@
                                 value: item.display_name
                             }
                         ]"
-                            :edit-action="{ show: authStore.permission('role').canUpdate(), to: { name: 'admin.roles.edit', params: { user_id: item.id } } }"
+                            :edit-action="{ show: authStore.permission('role').canUpdate(), to: { name: 'admin.roles.edit', params: { role_id: item.id } } }"
                             :delete-confirm-action="{
                                 show: authStore.permission('role').canDelete(),
                                 callback: method_deleteRole,
