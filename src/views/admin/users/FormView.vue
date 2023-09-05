@@ -1,16 +1,18 @@
 <template>
-    <base-view :page-title="computed_isCreating ? 'Novo usuário' : 'Editar usuário'" :page-breadcrumbs="[
-        {
-            text: 'Usuários',
-            to: { name: 'admin.users' },
-            disabled: false
-        },
-        {
-            text: computed_isCreating ? 'Novo' : 'Editar',
-            to: computed_isCreating ? { name: 'admin.users.create' } : { name: 'admin.users.edit', params: { user_id: route.params.user_id } },
-            disabled: true
-        }
-    ]" :requests="computed_isCreating ? [] : [
+    <base-view
+        :page-title="computed_isCreating ? 'Novo usuário' : computed_showMode ? 'Detalhes do usuário' : 'Editar usuário'"
+        :page-breadcrumbs="[
+            {
+                text: 'Usuários',
+                to: { name: 'admin.users' },
+                disabled: false
+            },
+            {
+                text: computed_isCreating ? 'Novo' : computed_showMode ? 'Detalhes' : 'Editar',
+                to: computed_isCreating ? { name: 'admin.users.create' } : { name: computed_showMode ? 'admin.users.show' : 'admin.users.edit', params: { user_id: route.params.user_id } },
+                disabled: true
+            }
+        ]" :requests="computed_isCreating ? [] : [
     method_getUser,
     method_getRoles
 ]" :create-action="{
@@ -32,7 +34,7 @@
                                             :error-messages="form.errors?.first_name" :rules="[
                                                 validator.required,
                                                 validator.first_name
-                                            ]" label="Nome" />
+                                            ]" label="Nome" :readonly="computed_showMode" />
                                     </v-col>
                                     <!-- /first_name -->
 
@@ -42,7 +44,7 @@
                                             :rules="[
                                                 validator.required,
                                                 validator.last_name
-                                            ]" label="Sobrenome" />
+                                            ]" label="Sobrenome" :readonly="computed_showMode" />
                                     </v-col>
                                     <!-- /last_name -->
 
@@ -52,7 +54,7 @@
                                             :rules="[
                                                 validator.required,
                                                 validator.first_name
-                                            ]" label="Usuário" />
+                                            ]" label="Usuário" :readonly="computed_showMode" />
                                     </v-col>
                                     <!-- /username -->
 
@@ -62,14 +64,15 @@
                                             validator.required,
                                             validator.gender
                                         ]" label="Gênero"
-                                            :items="Object.entries(ALLOWED_GENDERS).map((ag) => { return { title: ag[1].text, value: ag[1].value }; })" />
+                                            :items="Object.entries(ALLOWED_GENDERS).map((ag) => { return { title: ag[1].text, value: ag[1].value }; })"
+                                            :readonly="computed_showMode" />
                                     </v-col>
                                     <!-- /gender -->
 
                                     <!-- email -->
                                     <v-col cols="12">
                                         <v-text-field v-model="form.data.email" :error-messages="form.errors?.email"
-                                            label="E-mail" :readonly="!computed_isCreating" :rules="computed_isCreating ? [
+                                            label="E-mail" :readonly="!computed_isCreating || computed_showMode" :rules="computed_isCreating ? [
                                                 validator.required,
                                                 validator.email
                                             ] : []" />
@@ -82,7 +85,7 @@
                                             :error-messages="form.errors?.password" label="Senha" :rules="computed_isCreating ? [
                                                 validator.required,
                                                 validator.password
-                                            ] : []" />
+                                            ] : []" v-if="!computed_showMode" />
                                     </v-col>
                                     <!-- /password -->
 
@@ -93,12 +96,12 @@
                                             :rules="computed_isCreating ? [
                                                 validator.required,
                                                 validator.password
-                                            ] : []" />
+                                            ] : []" v-if="!computed_showMode" />
                                     </v-col>
                                     <!-- /password_confirmation -->
 
                                     <!-- submit -->
-                                    <v-col cols="12">
+                                    <v-col v-if="!computed_showMode" cols="12">
                                         <div class="text-center">
                                             <v-btn type="submit"
                                                 :text="(computed_isCreating ? 'Registrar' : 'Atualizar') + ' conta'"
@@ -118,7 +121,7 @@
                             <div class="d-flex justify-center mb-5">
                                 <user-avatar :username="form.data?.first_name" :photo_url="form.data?.photo_url" />
                             </div>
-                            <div class="d-flex justify-center">
+                            <div v-if="!computed_showMode" class="d-flex justify-center">
                                 <button-confirmation v-if="form.data?.photo_url" text="Excluir foto"
                                     icon="mdi-trash-can-outline" color="danger" variant="outlined"
                                     dialog-title="Excluir a foto?"
@@ -128,7 +131,7 @@
                         </template>
                     </content-elem>
 
-                    <content-elem v-if="authStore.isSuperuser && authStore.getUser.id != form.data.id"
+                    <content-elem v-if="authStore.isSuperuser && authStore.getUser.id != form.data.id && !computed_showMode"
                         title="Nível e funções" class="mb-6">
                         <template #content>
                             <dialog-confirmation v-model="formLevel.showConfirmationDialog"
@@ -285,6 +288,10 @@ const computed_isCreating = computed(() => {
     return route.params?.user_id ? false : true;
 });
 
+const computed_showMode = computed(() => {
+    return ['admin.users.show'].includes(route.name);
+});
+
 /**
  * 
  * Methods
@@ -424,6 +431,10 @@ const method_updateRoles = (newRoles, oldRoles) => {
     } else if (add.length) {
         action = '/admin/users/roles/' + form.value.data.id + '/' + add[0];
         method = 'put';
+    }
+
+    if (!action) {
+        return;
     }
 
     formRoles.value.submiting = true;

@@ -40,7 +40,7 @@
                                 value: { 0: 'Comum', 8: 'Administrador', 9: 'Super usuário' }[item.level]
                             }
                         ]"
-                            :show-action="{ show: authStore.permission('user').canView(), to: { name: 'admin.users.edit', params: { user_id: item.id } } }"
+                            :show-action="{ show: authStore.permission('user').canView(), to: { name: 'admin.users.show', params: { user_id: item.id } } }"
                             :edit-action="{ show: authStore.permission('user').canUpdate(), to: { name: 'admin.users.edit', params: { user_id: item.id } } }"
                             :delete-confirm-action="{
                                 show: authStore.permission('user').canDelete(),
