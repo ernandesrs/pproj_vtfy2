@@ -3,6 +3,18 @@
         <v-progress-circular indeterminate color="primary" size="45" />
     </div>
 
+    <v-form class="mb-4 py-3">
+        <v-row justify="space-between">
+            <v-col cols="12" sm="6" md="4" lg="2" xl="1">
+            </v-col>
+
+            <v-col cols="12" sm="6" md="4">
+                <v-text-field v-model="formFilter.search" label="Pesquisar" append-icon="mdi-filter-variant" clearable
+                    @click:append.prevent="method_filter" />
+            </v-col>
+        </v-row>
+    </v-form>
+
     <v-table hover>
         <thead>
             <tr>
@@ -17,7 +29,7 @@
         </tbody>
     </v-table>
 
-    <v-pagination v-if="(pages.length - 2) > 0" v-model="cPage" :length="(pages.length - 2)" total-visible="4"
+    <v-pagination v-if="(pages.length - 2) > 1" v-model="cPage" :length="(pages.length - 2)" total-visible="4"
         class="mt-6" />
 </template>
 
@@ -51,6 +63,10 @@ const props = defineProps({
     changePageCallback: {
         type: Function,
         default: null
+    },
+    filterCallback: {
+        type: Function,
+        default: null
     }
 });
 
@@ -63,6 +79,10 @@ const cPage = ref(1);
 
 const reloadingList = ref(false);
 
+const formFilter = ref({
+    search: null
+});
+
 /**
  * 
  * Methods
@@ -72,6 +92,27 @@ const method_pageChange = (page) => {
     reloadingList.value = true;
     try {
         props.changePageCallback(page).finally(() => {
+            reloadingList.value = false;
+        });
+    } catch {
+        reloadingList.value = false;
+    }
+};
+
+const method_filter = () => {
+    if (!props.filterCallback) {
+        return;
+    }
+
+    let filterStr = '';
+
+    reloadingList.value = true;
+    try {
+        if (formFilter.value.search) {
+            filterStr += 'search=' + formFilter.value.search;
+        }
+
+        props.filterCallback(filterStr).finally(() => {
             reloadingList.value = false;
         });
     } catch {

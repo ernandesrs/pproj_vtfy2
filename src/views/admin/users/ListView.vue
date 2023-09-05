@@ -17,7 +17,7 @@
                 <template #content>
 
                     <table-list resource="user" :items="data.users" :pages="data.pages"
-                        :change-page-callback="method_getUsers" :theads="[
+                        :change-page-callback="method_getUsers" :filter-callback="method_filterUsers" :theads="[
                             {
                                 label: 'Usuário'
                             },
@@ -87,15 +87,19 @@ const data = ref({
  * Methohds
  * 
  */
-const method_getUsers = (page = 1) => {
+const method_getUsers = (page = 1, filter = null) => {
     return req({
-        action: '/admin/users?page=' + page,
+        action: '/admin/users?page=' + page + (filter ? '&' + filter : ''),
         method: 'get',
         success: (resp) => {
             data.value.users = resp.data.users.list;
             data.value.pages = resp.data.users.meta.links;
         }
     });
+};
+
+const method_filterUsers = (filterStr) => {
+    return method_getUsers(1, filterStr);
 };
 
 const method_deleteUser = (d) => {
