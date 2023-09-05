@@ -19,9 +19,9 @@
 
                         <!-- card roles -->
                         <v-col cols="12" sm="5" md="4">
-                            <card-elem color="secondary" icon="mdi-shield-account-variant-outline" title="Funções"
+                            <card-elem color="secondary" icon="mdi-medal" title="Funções"
                                 :value="data.cards.roles.total" :action="{
-                                    to: { name: 'admin.home' },
+                                    to: { name: 'admin.roles' },
                                     text: 'Ir para funções'
                                 }" />
                         </v-col>

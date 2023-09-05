@@ -24,11 +24,7 @@ export default createVuetify({
       rounded: true
     },
     VBtn: {
-      class: 'text-none',
-      rounded: true
-    },
-    VBtnGroup: {
-      rounded: true
+      class: 'text-none'
     },
     VTextField: {
       variant: 'outlined'
