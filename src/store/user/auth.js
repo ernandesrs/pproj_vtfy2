@@ -54,6 +54,10 @@ export const useAuthStore = defineStore('auth', {
             return this.getFirstName + ' ' + this.getLastName;
         },
 
+        getEmail() {
+            return this.user.email
+        },
+
         getPhotoUrl() {
             return this.user?.photo_url ?? null;
         },
@@ -94,6 +98,9 @@ export const useAuthStore = defineStore('auth', {
                 token.remove();
                 this.user = null;
                 this.roles = null;
+
+                useAppStore().addAlert().danger('Você encerrou sua sessão com sucesso.', 'Sessão encerrada!', true);
+                router.push({ name: 'auth.login' });
             });
         },
 
