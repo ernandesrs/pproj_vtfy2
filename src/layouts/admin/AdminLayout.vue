@@ -64,12 +64,18 @@
                         :text="notificationStore.unread + ''" size="small" />
                     <!-- /notifications -->
 
-                    <v-btn @click="method_toggleTheme" icon="mdi-brightness-6" size="small" :ripple="false" />
+                    <!-- theme toggler -->
+                    <v-btn @click="appStore.toggleTheme()" icon="mdi-brightness-6" size="small" :ripple="false" />
+                    <!-- /theme toggler -->
+
+                    <!-- user profile -->
                     <v-btn icon="mdi-account-circle-outline" id="profile-activator" />
+                    <!-- /user profile -->
                 </v-btn-group>
 
                 <!-- nofitications menu -->
-                <v-menu activator="#notifications-activator" :close-on-content-click="false" width="350px" max-height="475px">
+                <v-menu activator="#notifications-activator" :close-on-content-click="false" width="350px"
+                    max-height="475px">
 
                     <v-list lines="two" class="pa-4">
                         <v-list-subheader class="mb-3">
@@ -129,7 +135,6 @@ import { useAppStore } from '@/store/app';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/store/user/auth';
 import { useNotificationStore } from '@/store/notifications';
-import { useTheme } from 'vuetify';
 import UserAvatar from '@/components/UserAvatar.vue';
 import { onUpdated } from 'vue';
 
@@ -144,7 +149,6 @@ import { onUpdated } from 'vue';
  * Vars, Refs ands Reactives
  * 
  */
-const theme = useTheme();
 
 const appStore = useAppStore();
 
@@ -201,13 +205,6 @@ const endNavItems = [
     }
 ];
 
-/**
- * Methods
- */
-const method_toggleTheme = () => {
-    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'cDark'
-};
-
 const method_navigationStatus = () => {
     if (window.innerWidth <= 1280) {
         showNavigation.value = false;
@@ -224,8 +221,8 @@ const method_navigationStatus = () => {
  * Created
  */
 method_navigationStatus();
-
 notificationStore.load();
+appStore.setTheme();
 
 onUpdated(() => {
     notificationStore.load();
