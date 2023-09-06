@@ -17,6 +17,10 @@ export const useAppStore = defineStore('app', {
 		 * App
 		 * 
 		 */
+		isDemo() {
+			return import.meta.env.VITE_APP_DEMO;
+		},
+
 		getName() {
 			return this.name;
 		},
