@@ -1,4 +1,8 @@
-import { user, role } from "./../../vtfy.config";
+import { user, role, notification } from "./../../vtfy.config";
+
+const getIcon = (icon, plural = false) => {
+    return typeof icon !== 'object' ? icon : (plural ? icon.plural : icon.normal);
+};
 
 const getLabel = (label, plural = false) => {
     return typeof label !== 'object' ? label : (plural ? label.plural : label.normal);
@@ -36,4 +40,16 @@ const roleConfig = {
     }
 };
 
-export { userConfig, roleConfig };
+const notificationConfig = {
+    types: () => {
+        return Object.entries(notification.types).map((l) => l[1].value);
+    },
+    typeIcon: (type, plural = false) => {
+        return getIcon(notification.types[type].icon, plural);
+    },
+    typeLabel: (type, plural = false) => {
+        return getLabel(notification.types[type].label, plural);
+    }
+};
+
+export { userConfig, roleConfig, notificationConfig };

@@ -4,13 +4,13 @@
  * 
  */
 
+/**
+ * 
+ * Necessário adicionar manualmente novos 'níveis' ou 'gêneros' sempre que um novo for adicionado na api, ver lista aqui:
+ * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\User)
+ * 
+ */
 const user = {
-    /**
-     * 
-     * Necessário adicionar manualmente novos 'níveis' sempre que um novo for adicionado na api, ver lista aqui:
-     * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\User)
-     * 
-     */
     levels: {
         0: {
             label: {
@@ -34,13 +34,6 @@ const user = {
             value: 9
         }
     },
-
-    /**
-     * 
-     * Necessário adicionar manualmente novos 'gêneros' sempre que um novo for adicionado na api, ver lista aqui:
-     * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\User)
-     * 
-     */
     genders: {
         'n': {
             label: {
@@ -66,13 +59,13 @@ const user = {
     }
 };
 
+/**
+ * 
+ * Necessário adicionar manualmente novas 'funções' e 'actions' sempre que um novo for adicionado na api, ver lista aqui:
+ * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\Role)
+ * 
+ */
 const role = {
-    /**
-     * 
-     * Necessário adicionar manualmente novos 'permissíveis' sempre que um novo for adicionado na api, ver lista aqui:
-     * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\Role)
-     * 
-     */
     permissibles: {
         App_Models_User: {
             label: {
@@ -89,13 +82,6 @@ const role = {
             value: "App_Models_Role",
         },
     },
-
-    /**
-     * 
-     * Necessário adicionar manualmente novos 'actions' sempre que um novo for adicionado na api, ver lista aqui:
-     * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\Role)
-     * 
-     */
     actions: {
         viewAny: {
             label: "Ver todos",
@@ -136,4 +122,26 @@ const role = {
     }
 };
 
-export { user, role };
+/**
+ * 
+ * Necessário adicionar manualmente novos 'tipos' sempre que um novo for adicionado na api, ver lista aqui:
+ * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\Notification)
+ * 
+ */
+const notification = {
+    types: {
+        'App_Notifications_UserRegisteredNotification': {
+            icon: {
+                normal: 'mdi-account-plus-outline',
+                plural: 'mdi-account-multiple-plus-outline'
+            },
+            label: {
+                normal: 'Usuário registrado',
+                plural: 'Usuários registados'
+            },
+            value: 'App_Notifications_UserRegisteredNotification'
+        }
+    }
+};
+
+export { user, role, notification };

@@ -69,7 +69,7 @@
                 </v-btn-group>
 
                 <!-- nofitications menu -->
-                <v-menu activator="#notifications-activator" :close-on-content-click="false" width="350px">
+                <v-menu activator="#notifications-activator" :close-on-content-click="false" width="350px" max-height="475px">
 
                     <v-list lines="two" class="pa-4">
                         <v-list-subheader class="mb-3">

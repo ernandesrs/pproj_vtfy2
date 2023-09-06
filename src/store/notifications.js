@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useAppStore } from "./app";
 import { req } from "@/plugins/axios";
+import { notificationConfig } from "@/utils/config-functions";
 
 /**
  * Interval
@@ -25,11 +26,12 @@ const requestNotifications = (notificationStore) => {
         method: method,
         success: (resp) => {
             let unreadCount = 0;
+
             notificationStore.notifications = [];
 
             Object.entries(resp.data.notifications.list).map((not) => {
                 notificationStore.notifications.push({
-                    icon: 'mdi-bell-outline',
+                    icon: notificationConfig.typeIcon(not[1].type),
                     id: not[1].id,
                     title: not[1].data.title,
                     read: not[1].read_at ? true : false,
@@ -125,12 +127,13 @@ export const useNotificationStore = defineStore('notification', {
             return req({
                 action: '/admin/notifications/' + notification.id + '/mark-as-read',
                 method: 'put',
-                success: () => {
+                success: (resp) => {
                     if (this.unread > 0) {
                         this.unread--;
                     }
 
                     this.notifications[index].read = true;
+                    this.notifications[index].read_at = resp.data.notification.read_at;
                 }
             });
         },
