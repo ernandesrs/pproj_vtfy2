@@ -24,81 +24,101 @@
         <template #content>
             <v-row justify="center">
                 <v-col cols="12" md="7" lg="8" order="last" order-md="first">
-                    <content-elem title="Dados da conta">
+                    <content-elem>
                         <template #content>
                             <v-form v-model="form.valid" @submit.prevent="method_submit">
                                 <v-row class="pt-3">
-                                    <!-- first_name -->
-                                    <v-col cols="12" sm="6">
-                                        <v-text-field v-model="form.data.first_name"
-                                            :error-messages="form.errors?.first_name" :rules="[
-                                                validator.required,
-                                                validator.first_name
-                                            ]" label="Nome" :readonly="computed_showMode" />
-                                    </v-col>
-                                    <!-- /first_name -->
-
-                                    <!-- last_name -->
-                                    <v-col cols="12" sm="6">
-                                        <v-text-field v-model="form.data.last_name" :error-messages="form.errors?.last_name"
-                                            :rules="[
-                                                validator.required,
-                                                validator.last_name
-                                            ]" label="Sobrenome" :readonly="computed_showMode" />
-                                    </v-col>
-                                    <!-- /last_name -->
-
-                                    <!-- username -->
-                                    <v-col cols="12" sm="6">
-                                        <v-text-field v-model="form.data.username" :error-messages="form.errors?.username"
-                                            :rules="[
-                                                validator.required,
-                                                validator.first_name
-                                            ]" label="Usuário" :readonly="computed_showMode" />
-                                    </v-col>
-                                    <!-- /username -->
-
-                                    <!-- gender -->
-                                    <v-col cols="12" sm="6">
-                                        <v-select v-model="form.data.gender" :error-messages="form.errors?.gender" :rules="[
-                                            validator.required,
-                                            validator.gender
-                                        ]" label="Gênero"
-                                            :items="userConfig.genders().map((g) => { return { title: userConfig.genderLabel(g), value: g }; })"
-                                            :readonly="computed_showMode" />
-                                    </v-col>
-                                    <!-- /gender -->
-
-                                    <!-- email -->
                                     <v-col cols="12">
-                                        <v-text-field v-model="form.data.email" :error-messages="form.errors?.email"
-                                            label="E-mail" :readonly="!computed_isCreating || computed_showMode" :rules="computed_isCreating ? [
-                                                validator.required,
-                                                validator.email
-                                            ] : []" />
-                                    </v-col>
-                                    <!-- /email -->
+                                        <group-elem title="Dados básicos da conta">
+                                            <template #content>
+                                                <v-row>
+                                                    <!-- first_name -->
+                                                    <v-col cols="12" sm="6">
+                                                        <v-text-field v-model="form.data.first_name"
+                                                            :error-messages="form.errors?.first_name" :rules="[
+                                                                validator.required,
+                                                                validator.first_name
+                                                            ]" label="Nome" :readonly="computed_showMode" />
+                                                    </v-col>
+                                                    <!-- /first_name -->
 
-                                    <!-- password -->
-                                    <v-col cols="12" sm="6">
-                                        <v-text-field type="password" v-model="form.data.password"
-                                            :error-messages="form.errors?.password" label="Senha" :rules="computed_isCreating ? [
-                                                validator.required,
-                                                validator.password
-                                            ] : []" v-if="!computed_showMode" />
-                                    </v-col>
-                                    <!-- /password -->
+                                                    <!-- last_name -->
+                                                    <v-col cols="12" sm="6">
+                                                        <v-text-field v-model="form.data.last_name"
+                                                            :error-messages="form.errors?.last_name" :rules="[
+                                                                validator.required,
+                                                                validator.last_name
+                                                            ]" label="Sobrenome" :readonly="computed_showMode" />
+                                                    </v-col>
+                                                    <!-- /last_name -->
 
-                                    <!-- password_confirmation -->
-                                    <v-col cols="12" sm="6">
-                                        <v-text-field type="password" v-model="form.data.password_confirmation"
-                                            :error-messages="form.errors?.password_confirmation" label="Confirmar senha"
-                                            :rules="computed_isCreating ? [
-                                                validator.required,
-                                                validator.password
-                                            ] : []" v-if="!computed_showMode" />
+                                                    <!-- username -->
+                                                    <v-col cols="12" sm="6">
+                                                        <v-text-field v-model="form.data.username"
+                                                            :error-messages="form.errors?.username" :rules="[
+                                                                validator.required,
+                                                                validator.first_name
+                                                            ]" label="Usuário" :readonly="computed_showMode" />
+                                                    </v-col>
+                                                    <!-- /username -->
+
+                                                    <!-- gender -->
+                                                    <v-col cols="12" sm="6">
+                                                        <v-select v-model="form.data.gender"
+                                                            :error-messages="form.errors?.gender" :rules="[
+                                                                validator.required,
+                                                                validator.gender
+                                                            ]" label="Gênero"
+                                                            :items="userConfig.genders().map((g) => { return { title: userConfig.genderLabel(g), value: g }; })"
+                                                            :readonly="computed_showMode" />
+                                                    </v-col>
+                                                    <!-- /gender -->
+
+                                                    <!-- email -->
+                                                    <v-col cols="12">
+                                                        <v-text-field v-model="form.data.email"
+                                                            :error-messages="form.errors?.email" label="E-mail"
+                                                            :readonly="!computed_isCreating || computed_showMode" :rules="computed_isCreating ? [
+                                                                validator.required,
+                                                                validator.email
+                                                            ] : []" />
+                                                    </v-col>
+                                                    <!-- /email -->
+                                                </v-row>
+                                            </template>
+                                        </group-elem>
                                     </v-col>
-                                    <!-- /password_confirmation -->
+
+                                    <v-col cols="12">
+                                        <group-elem title="Segurança"
+                                            :description="'Informe e confirme uma nova senha para ' + (computed_isCreating ? 'cadastrar' : 'atualizar')">
+                                            <template #content>
+                                                <v-row>
+                                                    <!-- password -->
+                                                    <v-col cols="12" sm="6">
+                                                        <v-text-field type="password" v-model="form.data.password"
+                                                            :error-messages="form.errors?.password" label="Senha" :rules="computed_isCreating ? [
+                                                                validator.required,
+                                                                validator.password
+                                                            ] : []" v-if="!computed_showMode" />
+                                                    </v-col>
+                                                    <!-- /password -->
+
+                                                    <!-- password_confirmation -->
+                                                    <v-col cols="12" sm="6">
+                                                        <v-text-field type="password"
+                                                            v-model="form.data.password_confirmation"
+                                                            :error-messages="form.errors?.password_confirmation"
+                                                            label="Confirmar senha" :rules="computed_isCreating ? [
+                                                                validator.required,
+                                                                validator.password
+                                                            ] : []" v-if="!computed_showMode" />
+                                                    </v-col>
+                                                    <!-- /password_confirmation -->
+                                                </v-row>
+                                            </template>
+                                        </group-elem>
+                                    </v-col>
 
                                     <!-- submit -->
                                     <v-col v-if="!computed_showMode" cols="12">
@@ -196,6 +216,7 @@ import validator from '@/utils/validator';
 import { watch, ref, computed, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { userConfig } from '@/utils/config-functions';
+import GroupElem from '@/components/GroupElem.vue';
 
 /**
  * 
