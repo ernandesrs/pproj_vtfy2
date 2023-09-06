@@ -50,7 +50,7 @@
                                             validator.required,
                                             validator.gender
                                         ]" label="Gênero"
-                                            :items="Object.entries(ALLOWED_GENDERS).map((ag) => { return { title: ag[1].text, value: ag[1].value }; })" />
+                                            :items="userConfig.genders().map((g) => { return { title: userConfig.genderLabel(g), value: g }; })" />
                                     </v-col>
                                     <!-- /gender -->
 
@@ -97,7 +97,8 @@
                             </div>
                             <div class="d-flex justify-center">
                                 <button-confirmation v-if="authStore.getPhotoUrl" text="Excluir foto"
-                                    icon="mdi-trash-can-outline" color="danger" variant="outlined" dialog-title="Excluir sua foto?"
+                                    icon="mdi-trash-can-outline" color="danger" variant="outlined"
+                                    dialog-title="Excluir sua foto?"
                                     dialog-text="Ao confirmar a exclusão da sua foto ela não poderá ser recuperada."
                                     :confirm-callback="method_photoDelete" />
                                 <v-form v-else v-model="formPhoto.valid" fast-fail class="w-100">
@@ -112,15 +113,16 @@
 
                     <content-elem title="Detalhes da conta">
                         <template #content>
-                            <detail-group tooltip="Data de criação da conta" icon="mdi-calendar-outline" title="Registrado" :text="(new
-                                Date(authStore.getUser.created_at)).toLocaleString('br')" />
+                            <detail-group tooltip="Data de criação da conta" icon="mdi-calendar-outline" title="Registrado"
+                                :text="(new
+                                    Date(authStore.getUser.created_at)).toLocaleString('br')" />
 
-                            <detail-group tooltip="Data de verificação da conta" icon="mdi-calendar-check-outline" title="Verificação"
-                                :text="authStore.getUser.email_verified_at ? (new
+                            <detail-group tooltip="Data de verificação da conta" icon="mdi-calendar-check-outline"
+                                title="Verificação" :text="authStore.getUser.email_verified_at ? (new
                                     Date(authStore.getUser.created_at)).toLocaleString('br') : 'Não verificado'" />
 
                             <detail-group tooltip="Nível de acesso do usuário" icon="mdi-license" title="Nível de acesso"
-                                :text="ALLOWED_LEVELS[authStore.getUser?.level].text" />
+                                :text="userConfig.levelLabel(authStore.getUser.level)" />
                         </template>
                     </content-elem>
                 </v-col>
@@ -142,6 +144,7 @@ import { req } from '@/plugins/axios';
 import ContentElem from '@/components/ContentElem.vue';
 import ButtonConfirmation from '@/components/ButtonConfirmation.vue';
 import DetailGroup from '@/components/DetailGroup.vue';
+import { userConfig } from '@/utils/config-functions';
 
 /**
  * 
@@ -154,35 +157,6 @@ import DetailGroup from '@/components/DetailGroup.vue';
  * Vars, Refs ands Reactives
  * 
  */
-const ALLOWED_GENDERS = {
-    n: {
-        value: 'n',
-        text: 'Não definir'
-    },
-    m: {
-        value: 'm',
-        text: 'Masculino'
-    },
-    f: {
-        value: 'f',
-        text: 'Feminino'
-    }
-};
-
-const ALLOWED_LEVELS = {
-    0: {
-        text: 'Comum',
-        value: 0
-    },
-    8: {
-        text: 'Administrativo',
-        value: 8
-    },
-    9: {
-        text: 'Super usuário',
-        value: 9
-    }
-};
 
 const authStore = useAuthStore();
 

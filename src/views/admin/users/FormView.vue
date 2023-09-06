@@ -64,7 +64,7 @@
                                             validator.required,
                                             validator.gender
                                         ]" label="Gênero"
-                                            :items="Object.entries(ALLOWED_GENDERS).map((ag) => { return { title: ag[1].text, value: ag[1].value }; })"
+                                            :items="userConfig.genders().map((g) => { return { title: userConfig.genderLabel(g), value: g }; })"
                                             :readonly="computed_showMode" />
                                     </v-col>
                                     <!-- /gender -->
@@ -140,10 +140,10 @@
                                 text="Você está promovendo este usuário a super usuário, isso o concede poder total sobre o sistema, incluindo e não limitando-se a editar e excluir outros super usuários." />
 
                             <v-form v-model="formLevel.valid">
-                                <v-select label="Nível de acesso" v-model="formLevel.data.level" :items="Object.entries(ALLOWED_LEVELS).map((l) => {
+                                <v-select label="Nível de acesso" v-model="formLevel.data.level" :items="userConfig.levels().map((l) => {
                                     return {
-                                        title: l[1].text,
-                                        value: l[1].value
+                                        title: userConfig.levelLabel(l),
+                                        value: l
                                     }
                                 })" :rules="[]" :error-messages="formLevel.errors?.level"
                                     :loading="formLevel.submiting" :disabled="formLevel.submiting" />
@@ -171,7 +171,7 @@
                                     Date(form.data.created_at)).toLocaleString('br') : 'Não verificado'" />
 
                             <detail-group tooltip="Nível de acesso do usuário" icon="mdi-license" title="Nível de acesso"
-                                :text="form.data?.level === undefined ? 'Não definido' : ALLOWED_LEVELS[form.data?.level].text" />
+                                :text="form.data?.level === undefined ? 'Não definido' : userConfig.levelLabel(form.data?.level)" />
                         </template>
                     </content-elem>
                 </v-col>
@@ -195,41 +195,13 @@ import { useAuthStore } from '@/store/user/auth';
 import validator from '@/utils/validator';
 import { watch, ref, computed, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { userConfig } from '@/utils/config-functions';
 
 /**
  * 
  * Vars, Refs ands Reactives
  * 
  */
-const ALLOWED_GENDERS = {
-    n: {
-        value: 'n',
-        text: 'Não definir'
-    },
-    m: {
-        value: 'm',
-        text: 'Masculino'
-    },
-    f: {
-        value: 'f',
-        text: 'Feminino'
-    }
-};
-
-const ALLOWED_LEVELS = {
-    0: {
-        text: 'Comum',
-        value: 0
-    },
-    8: {
-        text: 'Administrativo',
-        value: 8
-    },
-    9: {
-        text: 'Super usuário',
-        value: 9
-    }
-};
 
 const appStore = useAppStore();
 

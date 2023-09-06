@@ -37,7 +37,7 @@
                                 value: item.email
                             },
                             {
-                                value: { 0: 'Comum', 8: 'Administrador', 9: 'Super usuário' }[item.level]
+                                value: userConfig.levelLabel(item.level)
                             }
                         ]"
                             :show-action="{ show: authStore.permission('user').canView(), to: { name: 'admin.users.show', params: { user_id: item.id } } }"
@@ -67,6 +67,7 @@ import { useAuthStore } from '@/store/user/auth';
 import { useAppStore } from '@/store/app';
 import TableList from '@/components/list/TableList.vue';
 import TableListItem from '@/components/list/TableListItem.vue';
+import { userConfig } from '@/utils/config-functions';
 
 /**
  * 
