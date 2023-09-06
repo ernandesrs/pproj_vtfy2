@@ -56,12 +56,44 @@
 
             <template #append>
                 <v-btn-group variant="text">
-                    <v-btn icon="mdi-bell-outline" size="small" :ripple="false" />
+                    <!-- notifications -->
+                    <v-btn :prepend-icon="notificationStore.unread ? 'mdi-bell-ring-outline' : null"
+                        :icon="notificationStore.unread == 0 ? 'mdi-bell-outline' : null"
+                        :color="notificationStore.unread ? 'warning' : 'grey-lighten-1'"
+                        :class="[notificationStore.unread ? 'has-notifications' : '']" id="notifications-activator"
+                        :text="notificationStore.unread + ''" size="small" />
+                    <!-- /notifications -->
+
                     <v-btn @click="method_toggleTheme" icon="mdi-brightness-6" size="small" :ripple="false" />
                     <v-btn icon="mdi-account-circle-outline" id="profile-activator" />
                 </v-btn-group>
 
-                <v-menu activator="#profile-activator" width="220px">
+                <!-- nofitications menu -->
+                <v-menu activator="#notifications-activator" :close-on-content-click="false" width="350px">
+
+                    <v-list lines="two" class="pa-4">
+                        <v-list-subheader class="mb-3">
+                            <span class="text-body-1 mr-2">Notificações</span>
+                            <v-btn text="Ver todas" append-icon="mdi-arrow-right" variant="plain" size="small" />
+                        </v-list-subheader>
+
+                        <v-list-item v-for="not in notificationStore.getAll" :key="not.id" :title="not.title"
+                            :subtitle="not.description" :active="not.read_at ? false : true" color="info" class="mb-2">
+                            <template #prepend>
+                                <v-icon :icon="not.icon" />
+                            </template>
+                            <template #append>
+                                <v-btn @click.stop="notificationStore.markAsRead(not.id)" color="grey-darken-1"
+                                    icon="mdi-check-circle" variant="plain"
+                                    :style="[not.read_at ? 'pointer-events:none;opacity:0.2;' : '']"></v-btn>
+                            </template>
+                        </v-list-item>
+                    </v-list>
+
+                </v-menu>
+
+                <!-- profile menu -->
+                <v-menu activator="#profile-activator" :close-on-content-click="false" width="220px">
                     <v-list>
                         <v-list-item class="py-4 px-6">
                             <div class="d-flex flex-column align-center">
@@ -69,9 +101,11 @@
                                     :size=125 />
                                 <p class="mt-2 mb-5 text-h6 text-grey-darken-2">{{ authStore.getFullName }}</p>
                                 <div class="d-flex justify-space-between align-center w-100">
-                                    <v-btn :to="{ name: 'admin.profile' }" prepend-icon="mdi-account-circle" text="Perfil" color="primary" size="small"
-                                        variant="outlined" :disabled="route.name === 'admin.profile'" />
-                                    <v-btn @click.stop="authStore.logout" prepend-icon="mdi-logout" text="Sair" color="danger" size="small" variant="plain" />
+                                    <v-btn :to="{ name: 'admin.profile' }" prepend-icon="mdi-account-circle" text="Perfil"
+                                        color="primary" size="small" variant="outlined"
+                                        :disabled="route.name === 'admin.profile'" />
+                                    <v-btn @click.stop="authStore.logout" prepend-icon="mdi-logout" text="Sair"
+                                        color="danger" size="small" variant="plain" />
                                 </div>
                             </div>
                         </v-list-item>
@@ -94,8 +128,10 @@ import { ref } from 'vue';
 import { useAppStore } from '@/store/app';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/store/user/auth';
+import { useNotificationStore } from '@/store/notifications';
 import { useTheme } from 'vuetify';
 import UserAvatar from '@/components/UserAvatar.vue';
+import { onUpdated } from 'vue';
 
 /**
  * 
@@ -113,6 +149,8 @@ const theme = useTheme();
 const appStore = useAppStore();
 
 const authStore = useAuthStore();
+
+const notificationStore = useNotificationStore();
 
 const route = useRoute();
 
@@ -187,4 +225,44 @@ const method_navigationStatus = () => {
  */
 method_navigationStatus();
 
+notificationStore.load();
+
+onUpdated(() => {
+    notificationStore.load();
+});
+
 </script>
+
+<style scoped>
+.has-notifications {
+    animation: hasNotifications .75s ease 0s infinite alternate backwards;
+}
+
+@keyframes hasNotifications {
+    0% {
+        animation-timing-function: ease-out;
+        transform: scale(1);
+        transform-origin: center center;
+    }
+
+    10% {
+        animation-timing-function: ease-in;
+        transform: scale(0.91);
+    }
+
+    17% {
+        animation-timing-function: ease-out;
+        transform: scale(0.98);
+    }
+
+    33% {
+        animation-timing-function: ease-in;
+        transform: scale(0.87);
+    }
+
+    45% {
+        animation-timing-function: ease-out;
+        transform: scale(1);
+    }
+}
+</style>
