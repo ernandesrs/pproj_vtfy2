@@ -1,4 +1,4 @@
-import { user } from "./../../vtfy.config";
+import { user, role } from "./../../vtfy.config";
 
 const getLabel = (label, plural = false) => {
     return typeof label !== 'object' ? label : (plural ? label.plural : label.normal);
@@ -20,4 +20,20 @@ const userConfig = {
     }
 };
 
-export { userConfig };
+const roleConfig = {
+    permissibles: () => {
+        return Object.entries(role.permissibles).map((p) => { return [p[1].value] });
+    },
+    permissibleLabel: (permissible, plural = false) => {
+        return getLabel(role.permissibles[permissible].label, plural);
+    },
+
+    actions: () => {
+        return Object.entries(role.actions).map((a) => { return [a[1].value] });
+    },
+    actionLabel: (action) => {
+        return getLabel(role.actions[action]?.label, false);
+    }
+};
+
+export { userConfig, roleConfig };

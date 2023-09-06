@@ -43,7 +43,7 @@
                                                 <v-expansion-panel-title>
                                                     {{ (computed_showMode ? 'Ver ações permitidas/negadas sobre ' :
                                                         'Permitir/negar ações sobre ') +
-                                                        permissibleIndex
+                                                        roleConfig.permissibleLabel(permissibleIndex, true)
                                                     }}
                                                 </v-expansion-panel-title>
                                                 <v-expansion-panel-text>
@@ -51,7 +51,7 @@
                                                         <v-switch v-for="action, actionIndex in permissibleActions"
                                                             :key="actionIndex"
                                                             v-model="form.data.permissibles[permissibleIndex][actionIndex]"
-                                                            :label="actionIndex" class="mx-1"
+                                                            :label="roleConfig.actionLabel(actionIndex)" class="mx-1"
                                                             :disabled="computed_showMode" />
                                                     </div>
                                                 </v-expansion-panel-text>
@@ -84,6 +84,7 @@ import BaseView from '@/layouts/admin/BaseView';
 import { req } from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
 import { useAuthStore } from '@/store/user/auth';
+import { roleConfig } from '@/utils/config-functions';
 import validator from '@/utils/validator';
 import { onUpdated, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';

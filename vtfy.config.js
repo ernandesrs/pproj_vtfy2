@@ -1,4 +1,16 @@
+/**
+ * 
+ * Este é um arquivo de configurações
+ * 
+ */
+
 const user = {
+    /**
+     * 
+     * Necessário adicionar manualmente novos 'níveis' sempre que um novo for adicionado na api, ver lista aqui:
+     * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\User)
+     * 
+     */
     levels: {
         0: {
             label: {
@@ -22,6 +34,13 @@ const user = {
             value: 9
         }
     },
+
+    /**
+     * 
+     * Necessário adicionar manualmente novos 'gêneros' sempre que um novo for adicionado na api, ver lista aqui:
+     * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\User)
+     * 
+     */
     genders: {
         'n': {
             label: {
@@ -48,6 +67,12 @@ const user = {
 };
 
 const role = {
+    /**
+     * 
+     * Necessário adicionar manualmente novos 'permissíveis' sempre que um novo for adicionado na api, ver lista aqui:
+     * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\Role)
+     * 
+     */
     permissibles: {
         App_Models_User: {
             label: {
@@ -64,6 +89,13 @@ const role = {
             value: "App_Models_Role",
         },
     },
+
+    /**
+     * 
+     * Necessário adicionar manualmente novos 'actions' sempre que um novo for adicionado na api, ver lista aqui:
+     * https://documenter.getpostman.com/view/15369452/2s935oL4Dv (Na documentação da pasta \Admin\Role)
+     * 
+     */
     actions: {
         viewAny: {
             label: "Ver todos",
@@ -89,9 +121,9 @@ const role = {
             label: "Força exclusão",
             value: "forceDelete"
         },
-        recovery: {
+        restore: {
             label: "Recuperar",
-            value: "recovery"
+            value: "restore"
         },
         promote: {
             label: "Promover",
