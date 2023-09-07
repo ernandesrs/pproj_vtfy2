@@ -35,6 +35,12 @@ const routes = [
         name: 'auth.register',
         beforeEnter: [middlewares.redirectIf.authenticated],
         component: () => import('@/views/auth/RegisterView.vue')
+      },
+      {
+        path: 'forget',
+        name: 'auth.forget',
+        beforeEnter: [middlewares.redirectIf.authenticated],
+        component: () => import('@/views/auth/ForgetView.vue')
       }
     ]
   },

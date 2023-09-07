@@ -28,6 +28,11 @@
                     </v-col>
                 </v-row>
             </v-form>
+            <div class="border mt-8 mb-3 border" />
+            <div class="text-center">
+                <v-btn :to="{ name: 'auth.forget' }" text="Esquecia a senha" color="primary" variant="plain" size="large"
+                    :ripple="false" />
+            </div>
         </template>
     </base-view>
 </template>
