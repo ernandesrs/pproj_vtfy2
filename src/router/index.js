@@ -41,6 +41,12 @@ const routes = [
         name: 'auth.forget',
         beforeEnter: [middlewares.redirectIf.authenticated],
         component: () => import('@/views/auth/ForgetView.vue')
+      },
+      {
+        path: 'update-password',
+        name: 'auth.updatePassword',
+        beforeEnter: [middlewares.redirectIf.authenticated],
+        component: () => import('@/views/auth/UpdatePasswordView.vue')
       }
     ]
   },

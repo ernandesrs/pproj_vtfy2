@@ -12,7 +12,8 @@ const messages = {
     LoginFailException: 'E-mail e/ou senha inválido(s).',
     UnauthenticatedException: 'Você não está autenticado.',
     UnauthorizedException: 'Você não possui autorização.',
-    UnauthorizedActionException: 'Você não possui autorização para esta ação.'
+    UnauthorizedActionException: 'Você não possui autorização para esta ação.',
+    UpdatePasswordTokenInvalidException: 'O token de atualização de senha é inválido.'
 };
 
 export default {
