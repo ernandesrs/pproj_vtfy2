@@ -19,7 +19,7 @@ const routes = [
   // /auth
   {
     path: '/auth',
-    component: () => import('@/layouts/auth/Layout.vue'),
+    component: () => import('@/layouts/auth/AuthLayout.vue'),
     beforeEnter: [
       middlewares.configurator.inAuth
     ],

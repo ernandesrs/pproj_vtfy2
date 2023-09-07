@@ -1,17 +1,32 @@
 <template>
-    <slot />
+    <v-row justify="center">
+        <v-col cols="12" sm="10" md="12" lg="10">
+            <v-row justify="center">
+                <v-col cols="12" sm="10" md="6" class="pa-4 d-flex flex-column justify-start align-center">
+                    <slot name="image" />
+                </v-col>
+                <v-col cols="12" md="6">
+                    <v-card elevation="0" border class="pa-6">
+                        <v-card-item class="mb-3">
+                            <h1 class="text-h4">{{ props.pageTitle }}</h1>
+                        </v-card-item>
+                        <v-card-item>
+                            <slot name="form" />
+                        </v-card-item>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-col>
+    </v-row>
 </template>
 
 <script setup>
 
 import { useAppStore } from '@/store/app';
-import { watch } from 'vue';
+import { onUpdated } from 'vue';
 
 const props = defineProps({
-    pageBreadcrumbs: {
-        type: Array,
-        default: Array
-    }
+    pageTitle: {}
 });
 
 const appStore = useAppStore();
@@ -19,17 +34,16 @@ const appStore = useAppStore();
 /**
  * Methods
  */
-const method_setTitlebar = (breadcrumbs) => {
-    document.title = '[' + appStore.getName + (appStore.getSubname ? ' ' + appStore.getSubname : '') + '] ' + breadcrumbs.map((bread) => {
-        return bread.text;
-    }).join(' » ');
+const method_setTitlebar = () => {
+    document.title = '[' + appStore.getName + (appStore.getSubname ? ' ' + appStore.getSubname : '') + '] ' + props.pageTitle;
 }
 
-/**
- * Watchers
- */
-watch(() => props.pageBreadcrumbs, (nv) => {
-    method_setTitlebar(nv);
-}, { deep: true, immediate: true });
+method_setTitlebar();
+
+onUpdated(() => {
+
+    method_setTitlebar();
+
+})
 
 </script>
