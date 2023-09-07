@@ -47,6 +47,12 @@ const routes = [
         name: 'auth.updatePassword',
         beforeEnter: [middlewares.redirectIf.authenticated],
         component: () => import('@/views/auth/UpdatePasswordView.vue')
+      },
+      {
+        path: 'verify-account',
+        name: '',
+        beforeEnter: [middlewares.redirectIf.unauthenticated],
+        component: () => import('@/views/auth/VerifyAccount.vue')
       }
     ]
   },

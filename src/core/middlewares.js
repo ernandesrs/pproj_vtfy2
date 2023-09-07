@@ -15,6 +15,7 @@ const redirectors = {
         let theToken = token.get();
 
         if (!theToken) {
+            useAppStore().addAlert().danger('Você tentou acessar uma área que é necessário estar autenticado!', 'Necessário login!', true);
             next({ name: 'auth.login' });
         } else {
             await request({

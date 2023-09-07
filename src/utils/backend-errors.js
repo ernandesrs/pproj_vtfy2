@@ -13,7 +13,8 @@ const messages = {
     UnauthenticatedException: 'Você não está autenticado.',
     UnauthorizedException: 'Você não possui autorização.',
     UnauthorizedActionException: 'Você não possui autorização para esta ação.',
-    UpdatePasswordTokenInvalidException: 'O token de atualização de senha é inválido.'
+    UpdatePasswordTokenInvalidException: 'O token de atualização de senha é inválido.',
+    VerificationTokenInvalidException: 'O token de verificação de conta é inválido, solicite um novo token.'
 };
 
 export default {
