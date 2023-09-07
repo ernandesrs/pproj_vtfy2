@@ -24,21 +24,9 @@
                     </v-col>
 
                     <v-col cols="12" sm="6">
-                        <v-select label="Gênero" :items="[
-                            {
-                                text: 'Masculino',
-                                value: 'm'
-                            },
-                            {
-                                text: 'Feminino',
-                                value: 'f'
-                            },
-                            {
-                                text: 'Não definir',
-                                value: 'n'
-                            }
-                        ]" item-title="text" item-value="value" v-model="form.data.gender"
-                            :rules="[validator.required, validator.gender]" />
+                        <v-select label="Gênero"
+                            :items="userConfig.genders().map((g) => { return { title: userConfig.genderLabel(g), value: g } })"
+                            v-model="form.data.gender" :rules="[validator.required, validator.gender]" />
                     </v-col>
 
                     <v-col cols="12">
@@ -61,7 +49,8 @@
                     <v-col cols="12" class="d-flex align-center justify-space-between">
                         <v-btn :to="{ name: 'auth.login' }" append-icon="mdi-login" text="Eu tenho conta" color="primary"
                             size="large" variant="plain" />
-                        <v-btn type="submit" append-icon="mdi-check" text="Cadastrar" color="primary" size="large" :loading="form.submitting" />
+                        <v-btn type="submit" append-icon="mdi-check" text="Cadastrar" color="primary" size="large"
+                            :loading="form.submitting" />
                     </v-col>
                 </v-row>
             </v-form>
@@ -74,6 +63,7 @@
 import BaseView from '@/layouts/auth/BaseView.vue';
 import { req } from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
+import { userConfig } from '@/utils/config-functions';
 import validator from '@/utils/validator';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
