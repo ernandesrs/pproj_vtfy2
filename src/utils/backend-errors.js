@@ -3,6 +3,7 @@ const messages = {
     default: 'Oops, parece que houve um erro desconhecido.',
 
     // all
+    AppDemoException: 'Recurso desabilitado pois esta aplicação está em modo demonstração.',
     InvalidDataException: 'Um ou mais dados informados são inválidos.',
     NotFoundException: 'URL ou recurso não encontrado.',
     HasDependentsException: 'Este recurso possui um ou mais recursos dependentes.',
