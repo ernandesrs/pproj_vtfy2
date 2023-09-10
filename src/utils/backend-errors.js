@@ -14,7 +14,9 @@ const messages = {
     UnauthorizedException: 'Você não possui autorização.',
     UnauthorizedActionException: 'Você não possui autorização para esta ação.',
     UpdatePasswordTokenInvalidException: 'O token de atualização de senha é inválido.',
-    VerificationTokenInvalidException: 'O token de verificação de conta é inválido, solicite um novo token.'
+    VerificationTokenInvalidException: 'O token de verificação de conta é inválido, solicite um novo token.',
+    LoginWithGoogleFailException: 'Falha na autorização do acesso a sua conta Google',
+    SocialLoginEmailAlreadyRegisteredException: 'Email já registrado, faça login primeiro e vincule sua rede social.'
 };
 
 export default {

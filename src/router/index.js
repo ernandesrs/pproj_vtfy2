@@ -31,6 +31,12 @@ const routes = [
         component: () => import('@/views/auth/LoginView.vue')
       },
       {
+        path: 'login/social-login',
+        name: 'auth.socialLogin',
+        beforeEnter: [middlewares.redirectIf.authenticated],
+        component: () => import('@/views/auth/LoginView.vue')
+      },
+      {
         path: 'register',
         name: 'auth.register',
         beforeEnter: [middlewares.redirectIf.authenticated],

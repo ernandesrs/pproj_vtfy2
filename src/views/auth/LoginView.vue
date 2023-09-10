@@ -6,6 +6,11 @@
         </template>
 
         <template #form>
+            <div class="d-flex justify-space-between mb-8">
+                <v-btn :disabled="!googleLogin" :href="googleLogin" text="Login com Google" color="#E94235"
+                    variant="outlined" />
+                <v-btn text="Login com Facebook" color="#0572E6" variant="outlined" disabled />
+            </div>
             <v-form v-model="form.valid" @submit.prevent="method_login">
                 <v-row>
                     <v-col cols="12">
@@ -41,9 +46,11 @@
 
 import { useAppStore } from '@/store/app';
 import { useAuthStore } from '@/store/user/auth';
-import { ref } from 'vue';
+import { ref, onUpdated } from 'vue';
 import validator from '@/utils/validator';
 import BaseView from '@/layouts/auth/BaseView.vue';
+import { req } from '@/plugins/axios';
+import { useRoute, useRouter } from 'vue-router';
 
 /**
  * 
@@ -60,7 +67,13 @@ const appStore = useAppStore();
 
 const authStore = useAuthStore();
 
+const router = useRouter();
+
+const route = useRoute();
+
 const showPassword = ref(false);
+
+const googleLogin = ref(null);
 
 const form = ref({
     valid: false,
@@ -94,7 +107,34 @@ const method_login = () => {
     }).then(() => {
         form.value.submitting = false;
     })
-}
+};
+
+const method_socialLogin = () => {
+    if (route.name === 'auth.socialLogin') {
+
+        let error = route.query?.error;
+        if (error) {
+            appStore.addAlert().error(error, 'Falha no login', true);
+            router.push({ name: 'auth.login' });
+        } else {
+            let fullToken = route.query?.full;
+            let expire_in_minutes = route.query?.expire_in_minutes;
+
+            authStore.socialLogin(fullToken, expire_in_minutes);
+        }
+
+    }
+};
+
+const method_getSocialLoginUris = () => {
+    return req({
+        action: '/auth/login/social-uris',
+        method: 'get',
+        success: (resp) => {
+            googleLogin.value = resp.data.socials.google;
+        }
+    });
+};
 
 /**
  * 
@@ -102,8 +142,15 @@ const method_login = () => {
  * 
  */
 
+onUpdated(() => {
+    method_getSocialLoginUris();
+});
+
 /**
  * Created
  */
+
+method_socialLogin();
+method_getSocialLoginUris();
 
 </script>

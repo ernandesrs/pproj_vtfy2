@@ -80,14 +80,25 @@ export const useAuthStore = defineStore('auth', {
                 let user = resp.data.user;
                 let access = resp.data.access;
 
-                token.set(access.full, access.expire_in_minutes);
-
-                this.addUser(user);
-
-                useAppStore().addAlert().success(user.first_name + ', seja bem vindo(a) de volta!', 'Bem vindo(a)!', true);
-
-                router.push({ name: 'admin.home' });
+                this.authAndRedirect(user, access.full, access.expire_in_minutes);
             });
+        },
+
+        socialLogin(fullToken, expire_in_minutes) {
+            this.authAndRedirect(null, fullToken, expire_in_minutes);
+        },
+
+        authAndRedirect(user, fullToken, expire_in_minutes) {
+            token.set(fullToken, expire_in_minutes);
+
+            if (user) {
+                this.addUser(user);
+                useAppStore().addAlert().success(user.first_name + ', seja bem vindo(a) de volta!', 'Bem vindo(a)!', true);
+            } else {
+                useAppStore().addAlert().success('Seja bem vindo(a) de volta!', 'Bem vindo(a)!', true);
+            }
+
+            router.push({ name: 'admin.home' });
         },
 
         async logout() {
