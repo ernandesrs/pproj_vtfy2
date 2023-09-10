@@ -16,7 +16,7 @@ const messages = {
     UpdatePasswordTokenInvalidException: 'O token de atualização de senha é inválido.',
     VerificationTokenInvalidException: 'O token de verificação de conta é inválido, solicite um novo token.',
     LoginWithGoogleFailException: 'Falha na autorização do acesso a sua conta Google',
-    SocialLoginEmailAlreadyRegisteredException: 'Email já registrado, faça login primeiro e vincule sua rede social.'
+    SocialLoginEmailAlreadyRegisteredException: 'Email já registrado, faça login com email e senha.'
 };
 
 export default {
