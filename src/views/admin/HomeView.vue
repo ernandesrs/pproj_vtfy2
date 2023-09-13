@@ -4,7 +4,7 @@
     ]">
 
         <template #content>
-            <content-elem borderless>
+            <content-elem borderless title="Resumo geral">
                 <template #content>
                     <v-row justify="center">
                         <!-- card users -->
@@ -19,8 +19,8 @@
 
                         <!-- card roles -->
                         <v-col cols="12" sm="5" md="4">
-                            <card-elem color="secondary" icon="mdi-medal" title="Funções"
-                                :value="data.cards.roles.total" :action="{
+                            <card-elem color="secondary" icon="mdi-medal" title="Funções" :value="data.cards.roles.total"
+                                :action="{
                                     to: { name: 'admin.roles' },
                                     text: 'Ir para funções'
                                 }" />
@@ -29,11 +29,10 @@
 
                         <!-- card example -->
                         <v-col cols="12" sm="5" md="4">
-                            <card-elem color="info" icon="mdi-text-box-plus-outline" title="Example #1" value="101"
-                                :action="{
-                                    to: { name: 'admin.home' },
-                                    text: 'Example #1'
-                                }" />
+                            <card-elem color="info" icon="mdi-text-box-plus-outline" title="Example #1" value="101" :action="{
+                                to: { name: 'admin.home' },
+                                text: 'Example #1'
+                            }" />
                         </v-col>
                         <!-- /card example -->
                     </v-row>
