@@ -107,8 +107,6 @@ export const useAuthStore = defineStore('auth', {
                 method: 'get'
             }).then(() => {
                 token.remove();
-                this.user = null;
-                this.roles = null;
 
                 useAppStore().addAlert().danger('Você encerrou sua sessão com sucesso.', 'Sessão encerrada!', true);
                 router.push({ name: 'auth.login' });

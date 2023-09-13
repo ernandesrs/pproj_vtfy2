@@ -89,7 +89,7 @@
                                         </group-elem>
                                     </v-col>
 
-                                    <v-col cols="12">
+                                    <v-col cols="12" v-if="!computed_showMode">
                                         <group-elem title="Segurança"
                                             :description="'Informe e confirme uma nova senha para ' + (computed_isCreating ? 'cadastrar' : 'atualizar')">
                                             <template #content>
@@ -100,7 +100,7 @@
                                                             :error-messages="form.errors?.password" label="Senha" :rules="computed_isCreating ? [
                                                                 validator.required,
                                                                 validator.password
-                                                            ] : []" v-if="!computed_showMode" />
+                                                            ] : []" />
                                                     </v-col>
                                                     <!-- /password -->
 
@@ -112,7 +112,7 @@
                                                             label="Confirmar senha" :rules="computed_isCreating ? [
                                                                 validator.required,
                                                                 validator.password
-                                                            ] : []" v-if="!computed_showMode" />
+                                                            ] : []" />
                                                     </v-col>
                                                     <!-- /password_confirmation -->
                                                 </v-row>

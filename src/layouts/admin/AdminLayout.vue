@@ -6,7 +6,7 @@
 
         <!-- navigation -->
         <v-navigation-drawer v-model="showNavigation" elevation="10" color="navigation-bg" class="pa-4">
-            <!-- head -->
+            <!-- header: logo and app name -->
             <div class="text-center mb-3">
                 <v-icon icon="$vuetify" :size="75"></v-icon>
                 <v-app-bar-title>
@@ -14,7 +14,7 @@
                         appStore.getSubname }}</span>
                 </v-app-bar-title>
             </div>
-            <!-- /head -->
+            <!--  header: logo and app name -->
 
             <v-list>
                 <template v-for="item in navItems" :key="item">
@@ -46,6 +46,10 @@
                     <v-list-item v-for="item in endNavItems" :key="item" :prependIcon="item?.icon" :title="item?.text"
                         :to="item?.to" @click="item?.call ? item?.call() : null" />
                 </v-list>
+
+                <div class="text-center py-5">
+                    <v-btn @click.stop="method_logout" text="Encerrar sessão" color="danger" prepend-icon="mdi-logout" :loading="logouting" />
+                </div>
             </template>
         </v-navigation-drawer>
         <!-- /navigation -->
@@ -99,19 +103,19 @@
                 </v-menu>
 
                 <!-- profile menu -->
-                <v-menu activator="#profile-activator" :close-on-content-click="false" width="220px">
+                <v-menu activator="#profile-activator" :close-on-content-click="false" width="250px">
                     <v-list>
                         <v-list-item class="py-4 px-6">
                             <div class="d-flex flex-column align-center">
                                 <user-avatar :username="authStore.getFullName" :photo_url="authStore.getPhotoUrl"
                                     :size=125 />
-                                <p class="mt-2 mb-5 text-h6 text-grey-darken-2">{{ authStore.getFullName }}</p>
+                                <p class="mt-2 mb-5 text-h6 text-grey-darken-2 text-center">{{ authStore.getFullName }}</p>
                                 <div class="d-flex justify-space-between align-center w-100">
                                     <v-btn :to="{ name: 'admin.profile' }" prepend-icon="mdi-account-circle" text="Perfil"
                                         color="primary" size="small" variant="outlined"
                                         :disabled="route.name === 'admin.profile'" />
-                                    <v-btn @click.stop="authStore.logout" prepend-icon="mdi-logout" text="Sair"
-                                        color="danger" size="small" variant="plain" />
+                                    <v-btn @click.stop="method_logout" prepend-icon="mdi-logout" text="Sair" color="danger"
+                                        size="small" variant="plain" :loading="logouting" />
                                 </div>
                             </div>
                         </v-list-item>
@@ -130,13 +134,12 @@
 <script setup>
 
 import AlertElem from '@/components/AlertElem.vue';
-import { ref } from 'vue';
 import { useAppStore } from '@/store/app';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/store/user/auth';
 import { useNotificationStore } from '@/store/notifications';
 import UserAvatar from '@/components/UserAvatar.vue';
-import { onUpdated } from 'vue';
+import { ref, onUpdated } from 'vue';
 
 /**
  * 
@@ -157,6 +160,8 @@ const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
 
 const route = useRoute();
+
+const logouting = ref(false);
 
 const showNavigation = ref(true);
 
@@ -194,21 +199,23 @@ const endNavItems = [
         to: { name: 'admin.profile' },
         icon: 'mdi-account',
         activeIn: ['admin.profile']
-    },
-    {
-        text: 'Logout',
-        call: () => {
-            authStore.logout();
-        },
-        icon: 'mdi-logout',
-        activeIn: []
     }
 ];
 
+/**
+ * 
+ * Methods
+ * 
+ */
 const method_navigationStatus = () => {
     if (window.innerWidth <= 1280) {
         showNavigation.value = false;
     }
+};
+
+const method_logout = () => {
+    logouting.value = true;
+    authStore.logout();
 };
 
 /**

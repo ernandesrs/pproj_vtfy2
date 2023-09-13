@@ -18,7 +18,7 @@
     </v-container>
 
     <template v-if="data.loading">
-        <div class="text-center py-2">
+        <div class="d-flex align-center justify-center" style="min-height: 275px;">
             <v-progress-circular indeterminate :size="40" :width="5" color="primary" />
         </div>
     </template>

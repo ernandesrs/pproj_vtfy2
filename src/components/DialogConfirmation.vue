@@ -4,15 +4,15 @@
             <v-card-title v-if="props.title" :class="['px-6 pt-5', 'text-' + props.color]">
                 {{ props.title }}
             </v-card-title>
-            <v-card-text :class="['py-3', 'text-' + props.color]">
+            <v-card-text :class="['pt-1 pb-2', 'text-' + props.color]">
                 {{ props.text }}
             </v-card-text>
             <v-card-actions class="d-flex align-center justify-space-between px-6 pt-2 pb-6">
-                <v-btn @click.stop="method_cancel" text="Cancelar" color="grey-darken-1"
-                    prepend-icon="mdi-close-circle-outline" variant="plain" class="mr-3 px-4"
+                <v-btn @click.stop="method_cancel" text="Cancelar" :color="props.color"
+                    prepend-icon="mdi-close-circle-outline" variant="outlined" class="mr-3 px-4"
                     :loading="data.waitingCancelCallback" />
                 <v-btn @click.stop="method_confirm" text="Confirmar" :color="props.color"
-                    prepend-icon="mdi-check-circle-outline" variant="outlined" class="ml-3 px-4"
+                    prepend-icon="mdi-check-circle-outline" variant="elevated" class="ml-3 px-4"
                     :loading="data.waitingConfirmationCallback" />
             </v-card-actions>
         </v-card>
