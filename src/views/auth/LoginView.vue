@@ -7,9 +7,8 @@
 
         <template #form>
             <div class="d-flex justify-space-between mb-8">
-                <v-btn :disabled="!googleLogin" :href="googleLogin" prepend-icon="mdi-google" text="Login com Google" color="#E94235"
-                    variant="outlined" />
-                <v-btn :disabled="!facebookLogin" :href="facebookLogin" prepend-icon="mdi-facebook" text="Login com Facebook" color="#0572E6" variant="outlined" />
+                <v-btn :disabled="!googleLogin" :href="googleLogin" prepend-icon="mdi-google" text="Login com Google"
+                    color="#E94235" variant="outlined" />
             </div>
             <v-form v-model="form.valid" @submit.prevent="method_login">
                 <v-row>
