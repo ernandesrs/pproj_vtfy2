@@ -65,7 +65,7 @@
                         :icon="notificationStore.unread == 0 ? 'mdi-bell-outline' : null"
                         :color="notificationStore.unread ? 'warning' : 'grey-lighten-1'"
                         :class="[notificationStore.unread ? 'has-notifications' : '']" id="notifications-activator"
-                        :text="notificationStore.unread + ''" size="small" />
+                        :text="notificationStore.unread + ''" size="small" :ripple="false" />
                     <!-- /notifications -->
 
                     <!-- theme toggler -->
@@ -73,7 +73,7 @@
                     <!-- /theme toggler -->
 
                     <!-- user profile -->
-                    <v-btn icon="mdi-account-circle-outline" id="profile-activator" />
+                    <v-btn icon="mdi-account-circle-outline" id="profile-activator" :ripple="false" />
                     <!-- /user profile -->
                 </v-btn-group>
 
