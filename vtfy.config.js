@@ -17,6 +17,10 @@ const user = {
                 normal: 'Comum',
                 plural: 'Comuns'
             },
+            icon: {
+                normal: 'mdi-account-outline',
+                plural: 'mdi-account-group-outline'
+            },
             value: 0
         },
         8: {
@@ -24,12 +28,20 @@ const user = {
                 normal: 'Administrador',
                 plural: 'Administradores'
             },
+            icon: {
+                normal: 'mdi-account-star-outline',
+                plural: 'mdi-account-star-outline'
+            },
             value: 8
         },
         9: {
             label: {
                 normal: 'Super usuário',
                 plural: 'Super usuários'
+            },
+            icon: {
+                normal: 'mdi-account-star-outline',
+                plural: 'mdi-account-star-outline'
             },
             value: 9
         }

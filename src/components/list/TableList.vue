@@ -16,7 +16,7 @@
     </v-form>
 
     <v-table hover>
-        <thead>
+        <thead v-if="props.theads.length">
             <tr>
                 <th v-for="col in theads" :key="col">{{ col.label }}</th>
                 <th class="py-4 text-right">Ações</th>
@@ -51,7 +51,7 @@ import { watch, ref } from 'vue';
 const props = defineProps({
     theads: {
         type: Array,
-        default: Array
+        default: Array.from([])
     },
     items: {
         type: Array,

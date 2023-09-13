@@ -15,6 +15,9 @@ const userConfig = {
     levelLabel: (level, plural = false) => {
         return getLabel(user.levels[level].label, plural);
     },
+    levelIcon: (level, plural = false) => {
+        return getIcon(user.levels[level].icon, plural);
+    },
 
     genders: () => {
         return Object.entries(user.genders).map((g) => g[1].value);

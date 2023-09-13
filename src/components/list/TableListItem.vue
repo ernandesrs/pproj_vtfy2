@@ -1,7 +1,12 @@
 <template>
     <tr>
         <!-- columns -->
-        <td v-for="column in columns" :key="column" v-html="column.value"></td>
+        <template v-if="props.columns.length">
+            <td v-for="column in props.columns" :key="column" v-html="column.value"></td>
+        </template>
+        <template v-else>
+            <slot name="columns" />
+        </template>
         <!-- /columns -->
 
         <!-- actions -->
@@ -47,7 +52,10 @@ const props = defineProps({
         default: null,
         required: true
     },
-    columns: {},
+    columns: {
+        type: [Array],
+        default: Array.from([])
+    },
     showAction: {
         type: [Object, null],
         default: Object.create({
