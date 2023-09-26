@@ -32,7 +32,7 @@
                             <template #columns>
                                 <td class="py-4">
                                     <div class="d-flex flex-column align-center">
-                                        <user-avatar size="45" :photo_url="item.photo_url" :username="item.username"
+                                        <user-avatar size="75" :photo_url="item.photo_url" :username="item.username"
                                             class="mb-3" />
                                         <v-chip :prepend-icon="userConfig.levelIcon(item.level)"
                                             :text="userConfig.levelLabel(item.level)"
