@@ -2,7 +2,7 @@
 Dashboard em Vutify 3, utilizando a api em Laravel 9 [LAPI](https://github.com/ernandesrs/pproj_lapi).
 
 # VERSÃO MELHORADA
-Esta é uam versão melhorada de [VTFY](https://github.com/ernandesrs/pproj_vtfypanel), como descrito, era uma versão de estudo. Neste projeto estarei aplicando toda experiência adquirida na construção de [VTFY](https://github.com/ernandesrs/pproj_vtfypanel).
+Esta é uam versão melhorada de [VTFY](https://github.com/ernandesrs/pproj_vtfy), como descrito, era uma versão de estudo. Neste projeto estarei aplicando toda experiência adquirida na construção de [VTFY](https://github.com/ernandesrs/pproj_vtfy).
 
 ## Project setup
 
